@@ -7,12 +7,14 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.Text;
 
+import com.gmail.edziu1996.extrapermissions.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 import com.gmail.edziu1996.extrapermissions.config.ConfigRanks;
 
 public class CmdGroupExecutor implements CommandExecutor
 {
 	ConfigRanks ranks = ExtraPermissions.getPlugin().ranksConf;
+	ConfigLang lang = ExtraPermissions.getPlugin().langConf;
 	
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException
 	{
@@ -26,7 +28,9 @@ public class CmdGroupExecutor implements CommandExecutor
 			ranks.save();
 			ranks.loadByRank(name);
 			
-			src.sendMessage(Text.of("Rank " + name + " has a new prefix " + value));
+			String out = lang.newPrefixGroup.replace("%group%", name).replace("%prefix%", value);
+			
+			src.sendMessage(Text.of(out));
 		}
 
 		if (option.equalsIgnoreCase("suffix"))
@@ -35,7 +39,9 @@ public class CmdGroupExecutor implements CommandExecutor
 			ranks.save();
 			ranks.loadByRank(name);
 			
-			src.sendMessage(Text.of("Rank " + name + " has a new suffix " + value));
+			String out = lang.newSuffixGroup.replace("%group%", name).replace("%suffix%", value);
+			
+			src.sendMessage(Text.of(out));
 		}
 		
 		if (option.equalsIgnoreCase("permission"))
@@ -45,11 +51,14 @@ public class CmdGroupExecutor implements CommandExecutor
 				boolean bool = args.<Boolean>getOne("vale_perm").get();
 				ranks.get().getNode(name, option, value).setValue(bool);
 				ranks.save();
-				src.sendMessage(Text.of("Rank " + name + " has a new permission " + value + "(" + bool + ")"));
+				
+				String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("value", bool + "");
+				
+				src.sendMessage(Text.of(out));
 			}
 			else
 			{
-				src.sendMessage(Text.of("Usage: /experm <rank name> permission <permission> <true|false>"));
+				src.sendMessage(Text.of("Usage: /experm <rank_name> permission <permission> <true|false>"));
 			}
 		}
 		
@@ -59,7 +68,9 @@ public class CmdGroupExecutor implements CommandExecutor
 			ranks.save();
 			ranks.loadByRank(name);
 			
-			src.sendMessage(Text.of("Rank " + name + " has a new inheritance " + value));
+			String out = lang.newInheGroup.replace("%group%", name).replace("%inhe%", value);
+			
+			src.sendMessage(Text.of(out));
 		}
 		
 		if (option.equalsIgnoreCase("remove"))
@@ -69,7 +80,9 @@ public class CmdGroupExecutor implements CommandExecutor
 			ranks.save();
 			ranks.loadByRank(name);
 			
-			src.sendMessage(Text.of("Rank " + name + " has remove a " + value));
+			String out = lang.removeValGroup.replace("%group%", name).replace("%value%", value);
+			
+			src.sendMessage(Text.of(out));
 		}
 		
 		return CommandResult.success();

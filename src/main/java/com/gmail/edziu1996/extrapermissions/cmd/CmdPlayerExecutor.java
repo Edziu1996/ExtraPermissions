@@ -9,6 +9,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
+import com.gmail.edziu1996.extrapermissions.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 import com.gmail.edziu1996.extrapermissions.config.ConfigPlayers;
 import com.gmail.edziu1996.extrapermissions.manager.RanksManager;
@@ -18,6 +19,7 @@ public class CmdPlayerExecutor implements CommandExecutor
 	RanksManager rm = new RanksManager();
 	Game game = ExtraPermissions.getPlugin().getGame();
 	ConfigPlayers player = ExtraPermissions.getPlugin().playersConf;
+	ConfigLang lang = ExtraPermissions.getPlugin().langConf;
 	
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException
 	{
@@ -32,13 +34,15 @@ public class CmdPlayerExecutor implements CommandExecutor
 			String sid = p.getUniqueId().toString();
 			if (option.equalsIgnoreCase("prefix"))
 			{
-				src.sendMessage(Text.of(name + " have"));
 				player.get().getNode(sid, option).setValue(value);
 				player.save();
 				player.loadByPlayer(p);
 				
-				src.sendMessage(Text.of(p.getName() + " has a new prefix: " + value));
-				p.sendMessage(Text.of("You hava a new prefix: " + value));
+				String out1 = lang.newPrefixPlayer1.replace("%name%", name).replace("%prefix%", value);
+				String out2 = lang.newPrefixPlayer2.replace("%prefix%", value);
+				
+				src.sendMessage(Text.of(out1));
+				p.sendMessage(Text.of(out2));
 			}
 			
 			if (option.equalsIgnoreCase("suffix"))
@@ -47,8 +51,11 @@ public class CmdPlayerExecutor implements CommandExecutor
 				player.save();
 				player.loadByPlayer(p);
 				
-				src.sendMessage(Text.of(p.getName() + " has a new suffix: " + value));
-				p.sendMessage(Text.of("You hava a new suffix: " + value));
+				String out1 = lang.newSuffixPlayer1.replace("%name%", name).replace("%suffix%", value);
+				String out2 = lang.newSuffixPlayer2.replace("%suffix%", value);
+				
+				src.sendMessage(Text.of(out1));
+				p.sendMessage(Text.of(out2));
 			}
 			
 			if (option.equalsIgnoreCase("rank"))
@@ -60,14 +67,21 @@ public class CmdPlayerExecutor implements CommandExecutor
 					
 					rm.setPlayerTimeRank(p, value, time, unit);
 					
-					src.sendMessage(Text.of(p.getName() + " is already " + value + " for " + time + " " + unit));
-					p.sendMessage(Text.of("You are already " + value + " for " + time + " " + unit));
+					String out1 = lang.newTimeRankPlayer1.replace("%name%", name).replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
+					String out2 = lang.newTimeRankPlayer2.replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
+					
+					src.sendMessage(Text.of(out1));
+					p.sendMessage(Text.of(out2));
 				}
 				else
 				{
 					rm.setPlayerRank(p, value);
-					src.sendMessage(Text.of(p.getName() + " is already " + value));
-					p.sendMessage(Text.of("You are already " + value));
+					
+					String out1 = lang.newPrefixPlayer1.replace("%name%", name).replace("%rank%", value);
+					String out2 = lang.newPrefixPlayer2.replace("%rank%", value);
+					
+					src.sendMessage(Text.of(out1));
+					p.sendMessage(Text.of(out2));
 				}
 			}
 			
@@ -79,12 +93,14 @@ public class CmdPlayerExecutor implements CommandExecutor
 				player.loadByPlayer(p);
 				rm.playerLoadRank(p);
 				
-				src.sendMessage(Text.of("Rank " + name + " has remove a " + value));
+				String out = lang.removeValPlayer.replace("%name%", name).replace("%value%", value);
+				
+				src.sendMessage(Text.of(out));
 			}
 		}
 		else
 		{
-			src.sendMessage(Text.of("Player must be online!"));
+			src.sendMessage(Text.of(lang.mustPlayerOnline));
 		}
 		return CommandResult.success();
 	}

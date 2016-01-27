@@ -38,7 +38,14 @@ public class ConfigRanks extends ConfigManager
 	{
 		for (Entry<Object, ? extends CommentedConfigurationNode> e : get().getChildrenMap().entrySet())
 		{
-			ranksMap.put(e.getKey().toString(), e.getValue().getChildrenMap());
+			if (!e.getValue().getChildrenMap().isEmpty())
+			{
+				ranksMap.put(e.getKey().toString(), e.getValue().getChildrenMap());
+			}
+			else
+			{
+				get().removeChild(e.getKey());
+			}
 		}
 	}
 

@@ -28,6 +28,12 @@ public class ConfigManager
 		configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
 	}
 	
+	public ConfigManager(String folder, String name, String suffix)
+	{
+		configFile = Paths.get(ExtraPermissions.getPlugin().getConfigDir() + "/" + folder + "/" + name + suffix);
+		configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
+	}
+	
 	public void setup()
 	{
 		if (!Files.exists(configFile))

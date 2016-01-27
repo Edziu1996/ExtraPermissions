@@ -32,7 +32,14 @@ public class ConfigPlayers extends ConfigManager
 	{
 		for (Entry<Object, ? extends CommentedConfigurationNode> e : get().getChildrenMap().entrySet())
 		{
-			playersMap.put(e.getKey().toString(), e.getValue().getChildrenMap());
+			if (!e.getValue().getChildrenMap().isEmpty())
+			{
+				playersMap.put(e.getKey().toString(), e.getValue().getChildrenMap());
+			}
+			else
+			{
+				get().removeChild(e.getKey());
+			}
 		}
 	}
 

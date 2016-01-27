@@ -40,6 +40,7 @@ public class ExtraPermissions
 	public ConfigRanks ranksConf;
 	public ConfigPlayers playersConf;
 	public ConfigNormal config;
+	public ConfigLang langConf;
 	
 	@Listener
 	public void preInit(GamePreInitializationEvent event)
@@ -66,6 +67,9 @@ public class ExtraPermissions
 		
 		config = new ConfigNormal("config");
 		config.setup();
+		
+		langConf = new ConfigLang("lang", config.lang, ".lang");
+		langConf.setup();
 	}
 	
 	@Listener
