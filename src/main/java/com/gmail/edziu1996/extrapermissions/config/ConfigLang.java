@@ -1,4 +1,4 @@
-package com.gmail.edziu1996.extrapermissions;
+package com.gmail.edziu1996.extrapermissions.config;
 
 import com.gmail.edziu1996.extrapermissions.manager.ConfigManager;
 

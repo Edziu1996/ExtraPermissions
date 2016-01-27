@@ -24,13 +24,41 @@ public class ConfigManager
 	
 	public ConfigManager(String name, String suffix)
 	{
-		configFile = Paths.get(ExtraPermissions.getPlugin().getConfigDir() + "/" + name + suffix);
+		Path configDir = ExtraPermissions.getPlugin().getConfigDir();
+		
+		if(!Files.exists(configDir))
+		{
+			try
+			{
+				Files.createDirectories(configDir);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		configFile = Paths.get(configDir + "/" + name + suffix);
 		configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
 	}
 	
 	public ConfigManager(String folder, String name, String suffix)
 	{
-		configFile = Paths.get(ExtraPermissions.getPlugin().getConfigDir() + "/" + folder + "/" + name + suffix);
+		Path configDir = Paths.get(ExtraPermissions.getPlugin().getConfigDir() + "/" + folder);
+		
+		if(!Files.exists(configDir))
+		{
+			try
+			{
+				Files.createDirectories(configDir);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		configFile = Paths.get(configDir + "/" + name + suffix);
 		configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
 	}
 	

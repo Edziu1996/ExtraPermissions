@@ -7,8 +7,8 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.text.Text;
 
-import com.gmail.edziu1996.extrapermissions.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
+import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.config.ConfigRanks;
 
 public class CmdGroupExecutor implements CommandExecutor

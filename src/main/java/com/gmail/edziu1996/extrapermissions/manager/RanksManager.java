@@ -118,36 +118,23 @@ public class RanksManager
 						long time = playersMap.get(sid).get("rankTime").getLong();
 						long curTime = GregorianCalendar.getInstance().getTime().getTime();
 						
-						ExtraPermissions.getPlugin().getLogger().info(" 1 || " + time);
-						ExtraPermissions.getPlugin().getLogger().info(" 2 || " + curTime);
-						
 						if (playersMap.get(sid).containsKey("lastRank"))
 						{
 							String lastRank = playersMap.get(sid).get("lastRank").getString();
 							
 							if (time < curTime)
 							{
-//								playersMap.get(sid).remove("lastRank");
-//								playersMap.get(sid).remove("rankTime");
-//								playersMap.get(sid).remove("rankTimed");
-								
 								playerConf.get().getNode(sid).removeChild("lastRank");
 								playerConf.get().getNode(sid).removeChild("rankTime");
 								playerConf.get().getNode(sid).removeChild("rankTimed");
 								
 								playerConf.get().getNode(sid, "rank").setValue(lastRank);
-								
-//								playersMap.get(sid).get("rank").setValue(lastRank);
 							}
 						}
 						else
 						{
 							if (time < curTime)
 							{
-//								playersMap.get(sid).remove("rankTime");
-//								playersMap.get(sid).remove("rankTimed");
-//								playersMap.get(sid).remove("rank");
-								
 								playerConf.get().getNode(sid).removeChild("lastRank");
 								playerConf.get().getNode(sid).removeChild("rankTime");
 								playerConf.get().getNode(sid).removeChild("rankTimed");
@@ -158,8 +145,6 @@ public class RanksManager
 								}
 							}
 						}
-						
-						//saveInFile(p);
 						
 						playerConf.save();
 						playerConf.loadByPlayer(p);

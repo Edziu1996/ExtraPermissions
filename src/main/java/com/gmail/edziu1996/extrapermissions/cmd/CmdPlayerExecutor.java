@@ -9,8 +9,8 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
-import com.gmail.edziu1996.extrapermissions.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
+import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.config.ConfigPlayers;
 import com.gmail.edziu1996.extrapermissions.manager.RanksManager;
 
@@ -77,8 +77,8 @@ public class CmdPlayerExecutor implements CommandExecutor
 				{
 					rm.setPlayerRank(p, value);
 					
-					String out1 = lang.newPrefixPlayer1.replace("%name%", name).replace("%rank%", value);
-					String out2 = lang.newPrefixPlayer2.replace("%rank%", value);
+					String out1 = lang.newRankPlayer1.replace("%name%", name).replace("%rank%", value);
+					String out2 = lang.newRankPlayer2.replace("%rank%", value);
 					
 					src.sendMessage(Text.of(out1));
 					p.sendMessage(Text.of(out2));

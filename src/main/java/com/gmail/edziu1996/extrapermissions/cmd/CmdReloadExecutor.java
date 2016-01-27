@@ -8,8 +8,8 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 
-import com.gmail.edziu1996.extrapermissions.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
+import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.config.ConfigNormal;
 import com.gmail.edziu1996.extrapermissions.config.ConfigPlayers;
 import com.gmail.edziu1996.extrapermissions.config.ConfigRanks;

@@ -1,7 +1,5 @@
 package com.gmail.edziu1996.extrapermissions;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.slf4j.Logger;
@@ -16,6 +14,7 @@ import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 
+import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.config.ConfigNormal;
 import com.gmail.edziu1996.extrapermissions.config.ConfigPlayers;
 import com.gmail.edziu1996.extrapermissions.config.ConfigRanks;
@@ -46,18 +45,6 @@ public class ExtraPermissions
 	public void preInit(GamePreInitializationEvent event)
 	{
 		plugin = this;
-		
-		if(!Files.exists(configDir))
-		{
-			try
-			{
-				Files.createDirectories(configDir);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
 		
 		ranksConf = new ConfigRanks("ranks");
 		ranksConf.setup();
