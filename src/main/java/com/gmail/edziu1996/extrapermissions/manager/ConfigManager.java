@@ -14,6 +14,7 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 public class ConfigManager
 {
 	private Path configFile;
+	private Path configDir = ExtraPermissions.getPlugin().getConfigDir();
 	private ConfigurationLoader<CommentedConfigurationNode> configLoader;
 	private CommentedConfigurationNode configNode;
 	
@@ -24,28 +25,19 @@ public class ConfigManager
 	
 	public ConfigManager(String name, String suffix)
 	{
-		Path configDir = ExtraPermissions.getPlugin().getConfigDir();
-		
-		if(!Files.exists(configDir))
-		{
-			try
-			{
-				Files.createDirectories(configDir);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		
 		configFile = Paths.get(configDir + "/" + name + suffix);
 		configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
 	}
 	
 	public ConfigManager(String folder, String name, String suffix)
 	{
-		Path configDir = Paths.get(ExtraPermissions.getPlugin().getConfigDir() + "/" + folder);
-		
+		configDir = Paths.get(configDir + "/" + folder);
+		configFile = Paths.get(configDir + "/" + name + suffix);
+		configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
+	}
+	
+	public void setup()
+	{
 		if(!Files.exists(configDir))
 		{
 			try
@@ -58,12 +50,6 @@ public class ConfigManager
 			}
 		}
 		
-		configFile = Paths.get(configDir + "/" + name + suffix);
-		configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
-	}
-	
-	public void setup()
-	{
 		if (!Files.exists(configFile))
 		{
 			try

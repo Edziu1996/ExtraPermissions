@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 sourceCompatibility = 1.5
-version = '1.0'
+version=""
 jar {
     manifest {
         attributes 'Implementation-Title': 'Gradle Quickstart',
@@ -23,8 +23,20 @@ dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
 }
 
-test {
-    systemProperties 'property': 'value'
+sourceSets
+{
+	main
+	{
+		java
+		{
+			srcDirs = ["$projectDir/src/main/java"]
+		}
+		
+		resources
+		{
+			srcDirs = ["$projectDir/src/main/resources"]
+		}
+	}
 }
 
 uploadArchives {
