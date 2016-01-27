@@ -9,6 +9,7 @@ import org.spongepowered.api.text.Text.Builder;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
+import com.gmail.edziu1996.nameapi.NameAPI;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
@@ -30,6 +31,11 @@ public class MessageManager
 			String rank = rm.getPlayerRank(pl);
 			
 			String playerName = pl.getName();
+			
+			if (NameAPI.getPlugin().hasDisplayName(pl))
+			{
+				playerName = NameAPI.getPlugin().getDisplayName(pl);
+			}
 			
 //			DisplayNameData data = pl.getOrCreate(DisplayNameData.class).get();
 //			data.displayName().set(Text.of("Tesad"));

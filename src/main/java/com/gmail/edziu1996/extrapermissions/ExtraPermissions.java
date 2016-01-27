@@ -22,7 +22,7 @@ import com.gmail.edziu1996.extrapermissions.manager.CommandsManager;
 import com.gmail.edziu1996.extrapermissions.manager.EventManager;
 import com.google.inject.Inject;
 
-@Plugin(id=PluginInfo.ID,name=PluginInfo.NAME,version=PluginInfo.VERSION,dependencies=PluginInfo.DEPENDENCIES)
+@Plugin(id=ExtraPermissions.PluginInfo.ID,name=ExtraPermissions.PluginInfo.NAME,version=ExtraPermissions.PluginInfo.VERSION,dependencies=ExtraPermissions.PluginInfo.DEPENDENCIES)
 public class ExtraPermissions
 {
 	@Inject
@@ -99,5 +99,13 @@ public class ExtraPermissions
 	public Logger getLogger()
 	{
 		return logger;
+	}
+	
+	public class PluginInfo
+	{
+		public static final String ID = "ExtraPerm";
+		public static final String NAME = "ExtraPermissions";
+		public static final String VERSION = "0.2.4";
+		public static final String DEPENDENCIES = "required-after:NameAPI@[0.2,)";
 	}
 }
