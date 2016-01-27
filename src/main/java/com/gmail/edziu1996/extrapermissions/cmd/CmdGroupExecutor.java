@@ -49,10 +49,13 @@ public class CmdGroupExecutor implements CommandExecutor
 			if (args.hasAny("vale_perm"))
 			{
 				boolean bool = args.<Boolean>getOne("vale_perm").get();
-				ranks.get().getNode(name, option, value).setValue(bool);
+				
+				ranks.get().getNode(name, "permissions", value).setValue(bool);
 				ranks.save();
 				
-				String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("value", bool + "");
+				ranks.loadByRank(name);
+				
+				String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("%value%", bool + "");
 				
 				src.sendMessage(Text.of(out));
 			}

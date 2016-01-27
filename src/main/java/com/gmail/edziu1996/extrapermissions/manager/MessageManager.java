@@ -2,12 +2,10 @@ package com.gmail.edziu1996.extrapermissions.manager;
 
 import java.util.Map;
 
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.source.ConsoleSource;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.message.MessageChannelEvent.Chat;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Text.Builder;
-import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
@@ -21,18 +19,26 @@ public class MessageManager
 	static Map<String, Map<Object, ? extends CommentedConfigurationNode>> ranksMap = ExtraPermissions.getPlugin().ranksConf.ranksMap;
 	
 	
-	public static Text transformChatMessage(CommandSource src, String input)
+	public static Text transformChatMessage(Chat event, String input)
 	{
 		String output = "[Console] %message%";
 		
-		if (!(src instanceof ConsoleSource))
+		if (event.getCause().first(Player.class).isPresent())
 		{
-			Player pl = (Player) src;
+			Player pl = event.getCause().first(Player.class).get();
 			
-			// %player%
 			String rank = rm.getPlayerRank(pl);
 			
 			String playerName = pl.getName();
+			
+//			DisplayNameData data = pl.getOrCreate(DisplayNameData.class).get();
+//			data.displayName().set(Text.of("Tesad"));
+//			data.customNameVisible().set(true);
+//			pl.offer(data);
+//			
+//			pl.sendMessage(Text.of(pl.get(DisplayNameData.class).get().customNameVisible().get()));
+//			pl.sendMessage(Text.of(pl.get(DisplayNameData.class).get().displayName().get().toPlain()));
+			
 			String playerID = pl.getUniqueId().toString();
 			
 			String formula = ExtraPermissions.getPlugin().config.formule;
@@ -72,7 +78,6 @@ public class MessageManager
 		Builder message = Text.builder();
 		Text text = Text.builder()
 				.append(TextSerializers.FORMATTING_CODE.deserialize(output))
-				.onHover(TextActions.showText(Text.of(src.getName())))
 				.build();
 		
 		return message.append(Text.of(text)).build();

@@ -22,6 +22,7 @@ public class ConfigRanks extends ConfigManager
 	{
 		get().getNode("user", "prefix").setValue("[User]");
 		get().getNode("user", "permissions", "ExtraPerm.build").setValue(false);
+		get().getNode("user", "default").setValue(true);
 		
 		get().getNode("admin", "prefix").setValue("[Admin]");
 		get().getNode("admin", "inheritance").setValue("user");

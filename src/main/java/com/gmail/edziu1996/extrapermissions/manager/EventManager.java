@@ -4,8 +4,8 @@ package com.gmail.edziu1996.extrapermissions.manager;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
-import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
@@ -19,19 +19,22 @@ public class EventManager
 	public void onJoin(ClientConnectionEvent.Join event)
 	{
 		Player pl = event.getTargetEntity();
+		//pl.getDisplayNameData().displayName().set(Text.of("Test"));
 		
 		rm.playerLoadRank(pl);
 	}
 	
-	@Listener
-	public void onMessageChat(MessageChannelEvent.Chat event, @First CommandSource src)
+	@Listener(order=Order.FIRST)
+	public void onMessageChat(MessageChannelEvent.Chat event)
 	{
 		if(!event.getMessage().isPresent()) { return; }
 		
 		MessageChannel channel = MessageChannel.TO_ALL;
 		
+		
+		
 		String msgPlain = event.getMessage().get().toPlain();
-		Text msg = MessageManager.transformChatMessage(src, msgPlain.substring(msgPlain.indexOf(" ") + 1));
+		Text msg = MessageManager.transformChatMessage(event, msgPlain.substring(msgPlain.indexOf(" ") + 1));
 
 		event.setChannel(channel);
 		event.setMessage(msg);
