@@ -9,6 +9,7 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdExPermExecutor;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdGroupExecutor;
+import com.gmail.edziu1996.extrapermissions.cmd.CmdInfo;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdPlayerExecutor;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdReloadExecutor;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdUUID;
@@ -51,6 +52,16 @@ public class CommandsManager
 			.executor(new CmdUUID())
 			.build();
 	
+	static CommandSpec cmdInfo = CommandSpec.builder()
+			.description(of("Show all info"))
+			.permission("ExtraPerm.experm.info")
+			.arguments(
+					GenericArguments.string(of("option")),
+					GenericArguments.string(of("name"))
+					)
+			.executor(new CmdInfo())
+			.build();
+	
 	public static CommandSpec cmdExPerm = CommandSpec.builder()
 			.description(of("This is main command"))
 			.permission("ExtraPerm.experm")
@@ -59,6 +70,7 @@ public class CommandsManager
 			.child(cmdPlayer, "player")
 			.child(cmdReload, "reload", "rl")
 			.child(cmdUUIDs, "uuid", "id")
+			.child(cmdInfo, "info")
 			.build();
 	
 

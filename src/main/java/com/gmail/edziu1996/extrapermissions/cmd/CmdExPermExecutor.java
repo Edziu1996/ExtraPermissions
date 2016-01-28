@@ -42,6 +42,16 @@ public class CmdExPermExecutor implements CommandExecutor
 			list.add(Text.builder().append(Text.of("/experm player")).onClick(TextActions.suggestCommand("/experm player")).build());
 		}
 		
+		if (src.hasPermission("ExtraPerm.experm.uuid"))
+		{
+			list.add(Text.builder().append(Text.of("/experm uuid")).onClick(TextActions.suggestCommand("/experm uuid")).build());
+		}
+		
+		if (src.hasPermission("ExtraPerm.experm.info"))
+		{
+			list.add(Text.builder().append(Text.of("/experm info")).onClick(TextActions.suggestCommand("/experm info")).build());
+		}
+		
 		pages.contents(list);
 		pages.sendTo(src);
 		

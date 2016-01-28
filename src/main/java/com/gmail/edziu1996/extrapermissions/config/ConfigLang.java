@@ -38,6 +38,9 @@ public class ConfigLang extends ConfigManager
 	public String startReload = "Reloading plugin";
 	public String endReload = "Reload plugin";
 	
+	//Other
+	public String rankExist = "This rank does'n exist!";
+	
 	public ConfigLang(String folder, String string, String lang)
 	{
 		super(folder, string, lang);
@@ -67,6 +70,8 @@ public class ConfigLang extends ConfigManager
 		
 		get().getNode("message", "startReload").setValue(startReload);
 		get().getNode("message", "endReload").setValue(endReload);
+		
+		get().getNode("message", "rankNotExist").setValue(rankExist);
 	}
 	
 	@Override
@@ -93,6 +98,8 @@ public class ConfigLang extends ConfigManager
 		
 		startReload = getVal("message", "startReload", startReload);
 		endReload = getVal("message", "endReload", endReload);
+		
+		rankExist = getVal("message", "rankNotExist", rankExist);
 	}
 
 	private String getVal(String name, String val, String def)
