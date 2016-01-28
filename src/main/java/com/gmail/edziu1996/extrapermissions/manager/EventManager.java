@@ -1,8 +1,6 @@
 package com.gmail.edziu1996.extrapermissions.manager;
 
 
-import java.util.Map.Entry;
-
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -10,7 +8,6 @@ import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
-import org.spongepowered.api.service.permission.SubjectData;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
 
@@ -25,11 +22,6 @@ public class EventManager
 		//pl.getDisplayNameData().displayName().set(Text.of("Test"));
 		
 		rm.playerLoadRank(pl);
-		
-		for (Entry<String, Boolean> e : pl.getSubjectData().getAllPermissions().get(SubjectData.GLOBAL_CONTEXT).entrySet())
-		{
-			pl.sendMessage(Text.of(e.getKey() + ": " + e.getValue()));
-		}
 	}
 	
 	@Listener(order=Order.FIRST)
