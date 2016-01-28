@@ -60,29 +60,67 @@ public class CmdPlayerExecutor implements CommandExecutor
 			
 			if (option.equalsIgnoreCase("rank"))
 			{
-				if (args.hasAny("timeUnit") && args.hasAny("time"))
+				if (src instanceof Player)
 				{
-					int time = args.<Integer>getOne("time").get();
-					RanksManager.TimeUnit unit = RanksManager.TimeUnit.converFromString(args.<String>getOne("timeUnit").get());
-					
-					rm.setPlayerTimeRank(p, value, time, unit);
-					
-					String out1 = lang.newTimeRankPlayer1.replace("%name%", name).replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
-					String out2 = lang.newTimeRankPlayer2.replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
-					
-					src.sendMessage(Text.of(out1));
-					p.sendMessage(Text.of(out2));
+					if (src.hasPermission("experm.experm.group." + value))
+					{
+						if (args.hasAny("timeUnit") && args.hasAny("time"))
+						{
+							int time = args.<Integer>getOne("time").get();
+							RanksManager.TimeUnit unit = RanksManager.TimeUnit.converFromString(args.<String>getOne("timeUnit").get());
+							
+							rm.setPlayerTimeRank(p, value, time, unit);
+							
+							String out1 = lang.newTimeRankPlayer1.replace("%name%", name).replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
+							String out2 = lang.newTimeRankPlayer2.replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
+							
+							src.sendMessage(Text.of(out1));
+							p.sendMessage(Text.of(out2));
+						}
+						else
+						{
+							rm.setPlayerRank(p, value);
+							
+							String out1 = lang.newRankPlayer1.replace("%name%", name).replace("%rank%", value);
+							String out2 = lang.newRankPlayer2.replace("%rank%", value);
+							
+							src.sendMessage(Text.of(out1));
+							p.sendMessage(Text.of(out2));
+						}
+					}
+					else
+					{
+						String out = lang.newRankPlayerPerm;
+						src.sendMessage(Text.of(out));
+					}
 				}
 				else
 				{
-					rm.setPlayerRank(p, value);
-					
-					String out1 = lang.newRankPlayer1.replace("%name%", name).replace("%rank%", value);
-					String out2 = lang.newRankPlayer2.replace("%rank%", value);
-					
-					src.sendMessage(Text.of(out1));
-					p.sendMessage(Text.of(out2));
+					if (args.hasAny("timeUnit") && args.hasAny("time"))
+					{
+						int time = args.<Integer>getOne("time").get();
+						RanksManager.TimeUnit unit = RanksManager.TimeUnit.converFromString(args.<String>getOne("timeUnit").get());
+						
+						rm.setPlayerTimeRank(p, value, time, unit);
+						
+						String out1 = lang.newTimeRankPlayer1.replace("%name%", name).replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
+						String out2 = lang.newTimeRankPlayer2.replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
+						
+						src.sendMessage(Text.of(out1));
+						p.sendMessage(Text.of(out2));
+					}
+					else
+					{
+						rm.setPlayerRank(p, value);
+						
+						String out1 = lang.newRankPlayer1.replace("%name%", name).replace("%rank%", value);
+						String out2 = lang.newRankPlayer2.replace("%rank%", value);
+						
+						src.sendMessage(Text.of(out1));
+						p.sendMessage(Text.of(out2));
+					}
 				}
+				
 			}
 			
 			if (option.equalsIgnoreCase("remove"))

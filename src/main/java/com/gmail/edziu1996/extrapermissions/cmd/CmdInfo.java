@@ -3,6 +3,7 @@ package com.gmail.edziu1996.extrapermissions.cmd;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.spongepowered.api.Game;
 import org.spongepowered.api.command.CommandException;
@@ -35,11 +36,11 @@ public class CmdInfo implements CommandExecutor
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException
 	{
 		String opt = args.<String>getOne("option").get();
-		String name = args.<String>getOne("name").get();
 		
-		if (opt.equalsIgnoreCase("group"))
+		if (opt.equalsIgnoreCase("group") && args.hasAny("name"))
 		{
-			if (ranks.equals(name))
+			String name = args.<String>getOne("name").get();
+			if (ranks.ranksMap.containsKey(name))
 			{
 				PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
 				pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Rank: " + name)).build());
@@ -51,14 +52,15 @@ public class CmdInfo implements CommandExecutor
 					if (e.getKey().toString().equalsIgnoreCase("permissions"))
 					{
 						list.add(Text.of("Permissions: "));
-						for (Entry<Object, ? extends CommentedConfigurationNode> ee : e.getValue().getChildrenMap().get(SubjectData.GLOBAL_CONTEXT).getChildrenMap().entrySet())
+						
+						for (Entry<Object, ? extends CommentedConfigurationNode> ee : e.getValue().getChildrenMap().entrySet())
 						{
 							list.add(Text.of("- " + ee.getKey().toString() + ": " + ee.getValue().getValue().toString()));
 						}
 					}
 					else
 					{
-						list.add(Text.of(e.getKey().toString() + ": " + e.getValue()));
+						list.add(Text.of(e.getKey().toString() + ": " + e.getValue().getValue()));
 					}
 					
 				}
@@ -73,9 +75,25 @@ public class CmdInfo implements CommandExecutor
 			}
 				
 		}
-		
-		if (opt.equalsIgnoreCase("player"))
+		else if (opt.equalsIgnoreCase("group") && !args.hasAny("name"))
 		{
+			PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
+			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Ranks")).build());
+			
+			List<Text> list = new ArrayList<Text>();
+			
+			for (String e : ranks.ranksMap.keySet())
+			{
+				list.add(Text.of("- " + e));
+			}
+			
+			pages.contents(list);
+			pages.sendTo(src);
+		}
+		
+		if (opt.equalsIgnoreCase("player") && args.hasAny("name"))
+		{
+			String name = args.<String>getOne("name").get();
 			Player p = game.getServer().getPlayer(name).orElse(null);
 			
 			if (p != null)
@@ -87,9 +105,19 @@ public class CmdInfo implements CommandExecutor
 					
 					List<Text> list = new ArrayList<Text>();
 					
-					for (Entry<Object, ? extends CommentedConfigurationNode> e : ranks.ranksMap.get(name).entrySet())
+					for (Entry<Object, ? extends CommentedConfigurationNode> e : players.playersMap.get(NameAPI.getPlugin().getUUID(p).toString()).entrySet())
 					{
-						list.add(Text.of(e.getKey().toString() + ": " + e.getValue()));
+						list.add(Text.of(e.getKey().toString() + ": " + e.getValue().getValue().toString()));
+					}
+					
+					if (!p.getSubjectData().getAllPermissions().isEmpty())
+					{
+						list.add(Text.of("Permissions: "));
+						
+						for (Entry<String, Boolean> e : p.getSubjectData().getAllPermissions().get(SubjectData.GLOBAL_CONTEXT).entrySet())
+						{
+							list.add(Text.of("- " + e.getKey() + ": " + e.getValue().toString()));
+						}
 					}
 					
 					pages.contents(list);
@@ -104,6 +132,27 @@ public class CmdInfo implements CommandExecutor
 			{
 				src.sendMessage(Text.of(lang.mustPlayerOnline));
 			}
+		}
+		else if (opt.equalsIgnoreCase("player") && !args.hasAny("name"))
+		{
+			PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
+			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Players")).build());
+			
+			List<Text> list = new ArrayList<Text>();
+			
+			for (String e : players.playersMap.keySet())
+			{
+				UUID id = UUID.fromString(e);
+				String name = NameAPI.getPlugin().getPlayerNameFormUUID(id, game);
+				
+				if (name != null)
+				{
+					list.add(Text.of("- " + name));
+				}
+			}
+			
+			pages.contents(list);
+			pages.sendTo(src);
 		}
 		
 		return CommandResult.success();

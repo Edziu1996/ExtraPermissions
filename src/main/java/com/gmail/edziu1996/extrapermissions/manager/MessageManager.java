@@ -22,7 +22,17 @@ public class MessageManager
 	
 	public static Text transformChatMessage(Chat event, String input)
 	{
-		String output = "[Console] %message%";
+		String output = "[Console] ";
+		
+		String s = event.getRawMessage().toPlain();
+		String s2 = event.getMessage().get().toPlain().substring(event.getMessage().get().toPlain().indexOf(" ") + 1);
+		
+		Text message = Text.of(input);
+		
+		if (s.length() != s2.length())
+		{
+			message = TextSerializers.FORMATTING_CODE.deserialize(input);
+		}
 		
 		if (event.getCause().first(Player.class).isPresent())
 		{
@@ -36,14 +46,6 @@ public class MessageManager
 			{
 				playerName = NameAPI.getPlugin().getDisplayName(pl);
 			}
-			
-//			DisplayNameData data = pl.getOrCreate(DisplayNameData.class).get();
-//			data.displayName().set(Text.of("Tesad"));
-//			data.customNameVisible().set(true);
-//			pl.offer(data);
-//			
-//			pl.sendMessage(Text.of(pl.get(DisplayNameData.class).get().customNameVisible().get()));
-//			pl.sendMessage(Text.of(pl.get(DisplayNameData.class).get().displayName().get().toPlain()));
 			
 			String playerID = pl.getUniqueId().toString();
 			
@@ -59,14 +61,9 @@ public class MessageManager
 			
 			String world = pl.getWorld().getProperties().getWorldName().replace("DIM-1", "Nether").replace("DIM1", "The End");
 			
-			
-//			String rank_prefix = ranksMap.get(rank).get("prefix").getString();
-//			String rank_suffix = ranksMap.get(rank).get("suffix").getString();
 			String rank_prefix = getVal(ranksMap, rank, "prefix");
 			String rank_suffix = getVal(ranksMap, rank, "suffix");
 			
-//			String player_prefix = playerMap.get(playerID).get("prefix").getString();
-//			String player_suffix = playerMap.get(playerID).get("suffix").getString();
 			String player_prefix = getVal(playerMap, playerID, "prefix");
 			String player_suffix = getVal(playerMap, playerID, "suffix");
 			
@@ -79,14 +76,15 @@ public class MessageManager
 			
 		}
 		
-		output = convert(output, "%message%", input);
-		
-		Builder message = Text.builder();
+		Builder messageBuild = Text.builder();
 		Text text = Text.builder()
-				.append(TextSerializers.FORMATTING_CODE.deserialize(output))
+				.append(
+						TextSerializers.FORMATTING_CODE.deserialize(output),
+						message
+						)
 				.build();
 		
-		return message.append(Text.of(text)).build();
+		return messageBuild.append(Text.of(text)).build();
 	}
 
 	private static String getVal(Map<String, Map<Object, ? extends CommentedConfigurationNode>> map, String rank, String key)

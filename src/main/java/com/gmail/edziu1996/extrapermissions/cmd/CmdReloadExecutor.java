@@ -30,6 +30,7 @@ public class CmdReloadExecutor implements CommandExecutor
 		pla.setup();
 		ran.setup();
 		conf.setup();
+		lang.setup();
 		rank.realodRanks(ExtraPermissions.getPlugin().getGame());
 		src.sendMessage(of(lang.endReload));
 		

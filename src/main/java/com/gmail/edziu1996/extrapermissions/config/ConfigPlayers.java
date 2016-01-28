@@ -22,9 +22,7 @@ public class ConfigPlayers extends ConfigManager
 	@Override
 	public void populate()
 	{
-		get().getNode("hea6c72c-06d2-4cv6-a45d-bae23947b6f1", "rank").setValue("user");
-		get().getNode("hea6c72c-06d2-4cv6-a45d-bae23947b6f1", "suffix").setValue(" : ");
-		get().getNode("hea6c72c-06d2-4cv6-a45d-bae23947b6f1", "prefix").setValue(" [User] ");
+		
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
+import org.spongepowered.api.text.serializer.TextSerializers;
 
 public class EventManager
 {
@@ -19,7 +20,6 @@ public class EventManager
 	public void onJoin(ClientConnectionEvent.Join event)
 	{
 		Player pl = event.getTargetEntity();
-		//pl.getDisplayNameData().displayName().set(Text.of("Test"));
 		
 		rm.playerLoadRank(pl);
 	}
@@ -31,10 +31,10 @@ public class EventManager
 		
 		MessageChannel channel = MessageChannel.TO_ALL;
 		
+		Text text = event.getMessage().get();
+		String str = TextSerializers.FORMATTING_CODE.serialize(text);
 		
-		
-		String msgPlain = event.getMessage().get().toPlain();
-		Text msg = MessageManager.transformChatMessage(event, msgPlain.substring(msgPlain.indexOf(" ") + 1));
+		Text msg = MessageManager.transformChatMessage(event, str.substring(str.indexOf(" ") + 1));
 
 		event.setChannel(channel);
 		event.setMessage(msg);

@@ -1,5 +1,6 @@
 package com.gmail.edziu1996.extrapermissions.cmd;
 
+import org.spongepowered.api.Game;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -10,11 +11,14 @@ import org.spongepowered.api.text.Text;
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.config.ConfigRanks;
+import com.gmail.edziu1996.extrapermissions.manager.RanksManager;
 
 public class CmdGroupExecutor implements CommandExecutor
 {
 	ConfigRanks ranks = ExtraPermissions.getPlugin().ranksConf;
+	RanksManager rm = new RanksManager();
 	ConfigLang lang = ExtraPermissions.getPlugin().langConf;
+	Game game = ExtraPermissions.getPlugin().getGame();
 	
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException
 	{
@@ -52,7 +56,6 @@ public class CmdGroupExecutor implements CommandExecutor
 				
 				ranks.get().getNode(name, "permissions", value).setValue(bool);
 				ranks.save();
-				
 				ranks.loadByRank(name);
 				
 				String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("%value%", bool + "");

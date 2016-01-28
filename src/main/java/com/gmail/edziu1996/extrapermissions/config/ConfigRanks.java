@@ -21,17 +21,17 @@ public class ConfigRanks extends ConfigManager
 	public void populate()
 	{
 		get().getNode("user", "prefix").setValue("[User]");
-		get().getNode("user", "permissions", "ExtraPerm.build").setValue(false);
+		get().getNode("user", "permissions", "extraperm.build").setValue(false);
 		get().getNode("user", "default").setValue(true);
 		
 		get().getNode("admin", "prefix").setValue("[Admin]");
 		get().getNode("admin", "inheritance").setValue("user");
-		get().getNode("admin", "permissions", "ExtraPerm.build").setValue(true);
-		get().getNode("admin", "permissions", "ExtraPerm.experm.group").setValue(true);
-		get().getNode("admin", "permissions", "ExtraPerm.experm.reload").setValue(true);
-		get().getNode("admin", "permissions", "ExtraPerm.experm.uuid").setValue(true);
-		get().getNode("admin", "permissions", "ExtraPerm.experm.player").setValue(true);
-		get().getNode("admin", "permissions", "ExtraPerm.experm").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.build").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.group").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.reload").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.uuid").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.player").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm").setValue(true);
 	}
 	
 	@Override
