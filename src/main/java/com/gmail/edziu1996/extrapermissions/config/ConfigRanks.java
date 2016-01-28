@@ -27,11 +27,12 @@ public class ConfigRanks extends ConfigManager
 		get().getNode("admin", "prefix").setValue("[Admin]");
 		get().getNode("admin", "inheritance").setValue("user");
 		get().getNode("admin", "permissions", "extraperm.build").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.reload").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.uuid").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.group.use").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.reload.use").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.uuid.use").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.player.use").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.info.use").setValue(true);
+		get().getNode("admin", "permissions", "extraperm.experm.use").setValue(true);
 	}
 	
 	@Override

@@ -18,7 +18,7 @@ public class CommandsManager
 {
 	static CommandSpec cmdGroup = CommandSpec.builder()
 			.description(of("Group Manager"))
-			.permission("extraperm.experm.group")
+			.permission("extraperm.experm.group.use")
 			.executor(new CmdGroupExecutor())
 			.arguments(
 					GenericArguments.string(of("name")),
@@ -30,7 +30,7 @@ public class CommandsManager
 	
 	static CommandSpec cmdPlayer = CommandSpec.builder()
 			.description(of("Player Manager"))
-			.permission("extraperm.experm.player")
+			.permission("extraperm.experm.player.use")
 			.executor(new CmdPlayerExecutor())
 			.arguments(
 					GenericArguments.string(of("name")),
@@ -42,19 +42,19 @@ public class CommandsManager
 	
 	static CommandSpec cmdReload = CommandSpec.builder()
 			.description(of("Reload plugin"))
-			.permission("extraperm.experm.reload")
+			.permission("extraperm.experm.reload.use")
 			.executor(new CmdReloadExecutor())
 			.build();
 	
 	static CommandSpec cmdUUIDs = CommandSpec.builder()
 			.description(of("Show all players uuid"))
-			.permission("extraperm.experm.uuid")
+			.permission("extraperm.experm.uuid.use")
 			.executor(new CmdUUID())
 			.build();
 	
 	static CommandSpec cmdInfo = CommandSpec.builder()
 			.description(of("Show all info"))
-			.permission("extraperm.experm.info")
+			.permission("extraperm.experm.info.use")
 			.arguments(
 					GenericArguments.string(of("option")),
 					GenericArguments.optional(GenericArguments.string(of("name")))
