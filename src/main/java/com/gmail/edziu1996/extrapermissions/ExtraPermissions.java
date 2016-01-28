@@ -105,7 +105,7 @@ public class ExtraPermissions
 	{
 		public static final String ID = "ExtraPerm";
 		public static final String NAME = "ExtraPermissions";
-		public static final String VERSION = "0.3.0";
+		public static final String VERSION = "0.3.2";
 		public static final String DEPENDENCIES = "required-after:NameAPI@[0.2.0,)";
 	}
 }

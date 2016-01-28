@@ -40,6 +40,7 @@ public class ConfigLang extends ConfigManager
 	
 	//Other
 	public String rankExist = "This rank does'n exist!";
+	public String playerExist = "This player does'n exist!";
 	
 	public ConfigLang(String folder, String string, String lang)
 	{
@@ -72,6 +73,7 @@ public class ConfigLang extends ConfigManager
 		get().getNode("message", "endReload").setValue(endReload);
 		
 		get().getNode("message", "rankNotExist").setValue(rankExist);
+		get().getNode("message", "playerNotExist").setValue(playerExist);
 	}
 	
 	@Override
@@ -100,6 +102,7 @@ public class ConfigLang extends ConfigManager
 		endReload = getVal("message", "endReload", endReload);
 		
 		rankExist = getVal("message", "rankNotExist", rankExist);
+		rankExist = getVal("message", "playerNotExist", playerExist);
 	}
 
 	private String getVal(String name, String val, String def)

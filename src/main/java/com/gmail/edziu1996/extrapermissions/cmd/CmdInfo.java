@@ -21,6 +21,7 @@ import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
 import com.gmail.edziu1996.extrapermissions.config.ConfigPlayers;
 import com.gmail.edziu1996.extrapermissions.config.ConfigRanks;
+import com.gmail.edziu1996.nameapi.NameAPI;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
@@ -79,18 +80,25 @@ public class CmdInfo implements CommandExecutor
 			
 			if (p != null)
 			{
-				PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
-				pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Player: " + name)).build());
-				
-				List<Text> list = new ArrayList<Text>();
-				
-				for (Entry<Object, ? extends CommentedConfigurationNode> e : ranks.ranksMap.get(name).entrySet())
+				if (players.playersMap.containsKey(NameAPI.getPlugin().getUUID(p).toString()))
 				{
-					list.add(Text.of(e.getKey().toString() + ": " + e.getValue()));
+					PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
+					pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Player: " + name)).build());
+					
+					List<Text> list = new ArrayList<Text>();
+					
+					for (Entry<Object, ? extends CommentedConfigurationNode> e : ranks.ranksMap.get(name).entrySet())
+					{
+						list.add(Text.of(e.getKey().toString() + ": " + e.getValue()));
+					}
+					
+					pages.contents(list);
+					pages.sendTo(src);
 				}
-				
-				pages.contents(list);
-				pages.sendTo(src);
+				else
+				{
+					src.sendMessage(Text.of(lang.playerExist));
+				}
 			}
 			else
 			{
