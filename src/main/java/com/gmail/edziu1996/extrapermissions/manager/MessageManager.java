@@ -42,7 +42,7 @@ public class MessageManager
 			
 			String playerName = pl.getName();
 			
-			if (NameAPI.getPlugin().hasDisplayName(pl))
+			if (NameAPI.getPlugin().isVisibleDisplayName(pl))
 			{
 				playerName = NameAPI.getPlugin().getDisplayName(pl);
 			}
