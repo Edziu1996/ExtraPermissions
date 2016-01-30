@@ -74,6 +74,23 @@ public class CmdList implements CommandExecutor
 				}
 				
 			}
+			for (Player p : ExtraPermissions.getPlugin().getGame().getServer().getOnlinePlayers())
+			{
+				if (!list.contains(Text.of("- " + p.getName())))
+				{
+					if (players.playersMap.containsKey(p.getUniqueId().toString()))
+					{
+						if (!players.playersMap.get(p.getUniqueId().toString()).containsKey("rank"))
+						{
+							list.add(Text.of("- " + p.getName()));
+						}
+					}
+					else
+					{
+						list.add(Text.of("- " + p.getName()));
+					}
+				}
+			}
 			
 			pages.contents(list);
 			pages.sendTo(src);
