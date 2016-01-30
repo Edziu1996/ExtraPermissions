@@ -34,106 +34,175 @@ public class CmdPlayerExecutor implements CommandExecutor
 			String sid = p.getUniqueId().toString();
 			if (option.equalsIgnoreCase("prefix"))
 			{
-				player.get().getNode(sid, option).setValue(value);
-				player.save();
-				player.loadByPlayer(p);
-				
-				String out1 = lang.newPrefixPlayer1.replace("%name%", name).replace("%prefix%", value);
-				String out2 = lang.newPrefixPlayer2.replace("%prefix%", value);
-				
-				src.sendMessage(Text.of(out1));
-				p.sendMessage(Text.of(out2));
+				if (src instanceof Player)
+				{
+					String rName = rm.getPlayerRank(p);
+					String perm = "extraperm.experm.player." + rName + ".prefix";
+					String permDef = null;
+					
+					if (rName.equalsIgnoreCase(rm.getDefaultRank()))
+					{
+						permDef = "extraperm.experm.player.default.prefix";
+					}
+					
+					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					{
+						player.get().getNode(sid, option).setValue(value);
+						player.save();
+						player.loadByPlayer(p);
+						
+						String out1 = lang.newPrefixPlayer1.replace("%name%", name).replace("%prefix%", value);
+						String out2 = lang.newPrefixPlayer2.replace("%prefix%", value);
+						
+						src.sendMessage(Text.of(out1));
+						p.sendMessage(Text.of(out2));
+					}
+					else
+					{
+						String out = lang.dontHave.replace("%perm%", perm);
+						src.sendMessage(Text.of(out));
+					}
+				}
+				else
+				{
+					player.get().getNode(sid, option).setValue(value);
+					player.save();
+					player.loadByPlayer(p);
+					
+					String out1 = lang.newPrefixPlayer1.replace("%name%", name).replace("%prefix%", value);
+					String out2 = lang.newPrefixPlayer2.replace("%prefix%", value);
+					
+					src.sendMessage(Text.of(out1));
+					p.sendMessage(Text.of(out2));
+				}
 			}
 			
 			if (option.equalsIgnoreCase("suffix"))
 			{
-				player.get().getNode(sid, option).setValue(value);
-				player.save();
-				player.loadByPlayer(p);
-				
-				String out1 = lang.newSuffixPlayer1.replace("%name%", name).replace("%suffix%", value);
-				String out2 = lang.newSuffixPlayer2.replace("%suffix%", value);
-				
-				src.sendMessage(Text.of(out1));
-				p.sendMessage(Text.of(out2));
+				if (src instanceof Player)
+				{
+					String rName = rm.getPlayerRank(p);
+					String perm = "extraperm.experm.player." + rName + ".suffix";
+					String permDef = null;
+					
+					if (rName.equalsIgnoreCase(rm.getDefaultRank()))
+					{
+						permDef = "extraperm.experm.player.default.suffix";
+					}
+					
+					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					{
+						player.get().getNode(sid, option).setValue(value);
+						player.save();
+						player.loadByPlayer(p);
+						
+						String out1 = lang.newSuffixPlayer1.replace("%name%", name).replace("%suffix%", value);
+						String out2 = lang.newSuffixPlayer2.replace("%suffix%", value);
+						
+						src.sendMessage(Text.of(out1));
+						p.sendMessage(Text.of(out2));
+					}
+					else
+					{
+						String out = lang.dontHave.replace("%perm%", perm);
+						src.sendMessage(Text.of(out));
+					}
+				}
+				else
+				{
+					player.get().getNode(sid, option).setValue(value);
+					player.save();
+					player.loadByPlayer(p);
+					
+					String out1 = lang.newSuffixPlayer1.replace("%name%", name).replace("%suffix%", value);
+					String out2 = lang.newSuffixPlayer2.replace("%suffix%", value);
+					
+					src.sendMessage(Text.of(out1));
+					p.sendMessage(Text.of(out2));
+				}
 			}
 			
 			if (option.equalsIgnoreCase("rank"))
 			{
 				if (src instanceof Player)
 				{
-					if (src.hasPermission("experm.experm.group." + value))
+					String rName = rm.getPlayerRank(p);
+					String perm = "extraperm.experm.player." + rName + ".remove.rank";
+					String perm2 = "extraperm.experm.player." + value + ".setrank";
+					
+					String perm2Def = null;
+					
+					if (value.equalsIgnoreCase(rm.getDefaultRank()))
 					{
-						if (args.hasAny("timeUnit") && args.hasAny("time"))
-						{
-							int time = args.<Integer>getOne("time").get();
-							RanksManager.TimeUnit unit = RanksManager.TimeUnit.converFromString(args.<String>getOne("timeUnit").get());
-							
-							rm.setPlayerTimeRank(p, value, time, unit);
-							
-							String out1 = lang.newTimeRankPlayer1.replace("%name%", name).replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
-							String out2 = lang.newTimeRankPlayer2.replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
-							
-							src.sendMessage(Text.of(out1));
-							p.sendMessage(Text.of(out2));
-						}
-						else
-						{
-							rm.setPlayerRank(p, value);
-							
-							String out1 = lang.newRankPlayer1.replace("%name%", name).replace("%rank%", value);
-							String out2 = lang.newRankPlayer2.replace("%rank%", value);
-							
-							src.sendMessage(Text.of(out1));
-							p.sendMessage(Text.of(out2));
-						}
+						perm2Def = "extraperm.experm.player.default.setrank";
+					}
+					
+					String permDef = null;
+					
+					if (value.equalsIgnoreCase(rm.getDefaultRank()))
+					{
+						permDef = "extraperm.experm.player.default.remove.rank";
+					}
+					
+					if ((src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false)) && (src.hasPermission(perm2) || (perm2Def != null ? src.hasPermission(perm2Def) : false)))
+					{
+						setRank(args, p, src, name, value);
 					}
 					else
 					{
-						String out = lang.newRankPlayerPerm;
+						String out = lang.dontHave.replace("%perm%", perm) + "and " + perm2;
 						src.sendMessage(Text.of(out));
 					}
 				}
 				else
 				{
-					if (args.hasAny("timeUnit") && args.hasAny("time"))
-					{
-						int time = args.<Integer>getOne("time").get();
-						RanksManager.TimeUnit unit = RanksManager.TimeUnit.converFromString(args.<String>getOne("timeUnit").get());
-						
-						rm.setPlayerTimeRank(p, value, time, unit);
-						
-						String out1 = lang.newTimeRankPlayer1.replace("%name%", name).replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
-						String out2 = lang.newTimeRankPlayer2.replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
-						
-						src.sendMessage(Text.of(out1));
-						p.sendMessage(Text.of(out2));
-					}
-					else
-					{
-						rm.setPlayerRank(p, value);
-						
-						String out1 = lang.newRankPlayer1.replace("%name%", name).replace("%rank%", value);
-						String out2 = lang.newRankPlayer2.replace("%rank%", value);
-						
-						src.sendMessage(Text.of(out1));
-						p.sendMessage(Text.of(out2));
-					}
+					setRank(args, p, src, name, value);
 				}
 				
 			}
 			
 			if (option.equalsIgnoreCase("remove"))
 			{
+				if (src instanceof Player)
+				{
+					String rName = rm.getPlayerRank(p);
+					String perm = "extraperm.experm.player." + rName + ".remove." + value;
+					String perm2 = null;
+					
+					if (rName.equalsIgnoreCase(rm.getDefaultRank()))
+					{
+						perm2 = "extraperm.experm.player.default.remove." + value;
+					}
+					
+					if (src.hasPermission(perm) || (perm2 != null ? src.hasPermission(perm2) : false))
+					{
+						player.get().getNode(sid).removeChild(value);
+						player.save();
+						player.loadByPlayer(p);
+						rm.playerLoadRank(p);
+						
+						String out = lang.removeValPlayer.replace("%name%", name).replace("%value%", value);
+						
+						src.sendMessage(Text.of(out));
+					}
+					else
+					{
+						String out = lang.dontHave.replace("%perm%", perm);
+						src.sendMessage(Text.of(out));
+					}
+				}
+				else
+				{
+					player.get().getNode(sid).removeChild(value);
+					player.save();
+					player.loadByPlayer(p);
+					rm.playerLoadRank(p);
+					
+					String out = lang.removeValPlayer.replace("%name%", name).replace("%value%", value);
+					
+					src.sendMessage(Text.of(out));
+				}
 				
-				player.get().getNode(sid).removeChild(value);
-				player.save();
-				player.loadByPlayer(p);
-				rm.playerLoadRank(p);
-				
-				String out = lang.removeValPlayer.replace("%name%", name).replace("%value%", value);
-				
-				src.sendMessage(Text.of(out));
 			}
 		}
 		else
@@ -142,5 +211,34 @@ public class CmdPlayerExecutor implements CommandExecutor
 		}
 		return CommandResult.success();
 	}
+	
+	
+	private void setRank(CommandContext args, Player p, CommandSource src, String name, String value)
+	{
+		if (args.hasAny("timeUnit") && args.hasAny("time"))
+		{
+			int time = args.<Integer>getOne("time").get();
+			RanksManager.TimeUnit unit = RanksManager.TimeUnit.converFromString(args.<String>getOne("timeUnit").get());
+			
+			rm.setPlayerTimeRank(p, value, time, unit);
+			
+			String out1 = lang.newTimeRankPlayer1.replace("%name%", name).replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
+			String out2 = lang.newTimeRankPlayer2.replace("%rank%", value).replace("%time%", time +"").replace("%timeUnit%", unit+"");
+			
+			src.sendMessage(Text.of(out1));
+			p.sendMessage(Text.of(out2));
+		}
+		else
+		{
+			rm.setPlayerRank(p, value);
+			
+			String out1 = lang.newRankPlayer1.replace("%name%", name).replace("%rank%", value);
+			String out2 = lang.newRankPlayer2.replace("%rank%", value);
+			
+			src.sendMessage(Text.of(out1));
+			p.sendMessage(Text.of(out2));
+		}
+	}
+	
 
 }

@@ -1,6 +1,7 @@
 package com.gmail.edziu1996.extrapermissions.manager;
 
 
+import org.spongepowered.api.Game;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -12,9 +13,12 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
+import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
+
 public class EventManager
 {
 	private RanksManager rm = new RanksManager();
+	Game game = ExtraPermissions.getPlugin().getGame();
 	
 	@Listener
 	public void onJoin(ClientConnectionEvent.Join event)

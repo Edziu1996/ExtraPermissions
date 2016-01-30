@@ -52,17 +52,12 @@ public class CmdInfo implements CommandExecutor
 					if (e.getKey().toString().equalsIgnoreCase("permissions"))
 					{
 						list.add(Text.of("Permissions: "));
-						
-						for (Entry<Object, ? extends CommentedConfigurationNode> ee : e.getValue().getChildrenMap().entrySet())
-						{
-							list.add(Text.of("- " + ee.getKey().toString() + ": " + ee.getValue().getValue().toString()));
-						}
+						list.addAll(calculateRank(name));
 					}
 					else
 					{
-						list.add(Text.of(e.getKey().toString() + ": " + e.getValue().getValue()));
+						list.add(Text.of(e.getKey().toString() + ": " + e.getValue().getValue().toString()));
 					}
-					
 				}
 				
 				pages.contents(list);
@@ -96,42 +91,34 @@ public class CmdInfo implements CommandExecutor
 			String name = args.<String>getOne("name").get();
 			Player p = game.getServer().getPlayer(name).orElse(null);
 			
+			PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
+			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Player: " + name)).build());
+			
+			List<Text> list = new ArrayList<Text>();
+			
+			if (players.playersMap.containsKey(NameAPI.getPlugin().getUUID(p).toString()))
+			{
+				for (Entry<Object, ? extends CommentedConfigurationNode> e : players.playersMap.get(NameAPI.getPlugin().getUUID(p).toString()).entrySet())
+				{
+					list.add(Text.of(e.getKey().toString() + ": " + e.getValue().getValue().toString()));
+				}
+			}
+			
 			if (p != null)
 			{
-				if (players.playersMap.containsKey(NameAPI.getPlugin().getUUID(p).toString()))
+				if (!p.getSubjectData().getAllPermissions().isEmpty())
 				{
-					PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
-					pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Player: " + name)).build());
+					list.add(Text.of("Permissions: "));
 					
-					List<Text> list = new ArrayList<Text>();
-					
-					for (Entry<Object, ? extends CommentedConfigurationNode> e : players.playersMap.get(NameAPI.getPlugin().getUUID(p).toString()).entrySet())
+					for (Entry<String, Boolean> e : p.getSubjectData().getAllPermissions().get(SubjectData.GLOBAL_CONTEXT).entrySet())
 					{
-						list.add(Text.of(e.getKey().toString() + ": " + e.getValue().getValue().toString()));
+						list.add(Text.of("- " + e.getKey() + ": " + e.getValue().toString()));
 					}
-					
-					if (!p.getSubjectData().getAllPermissions().isEmpty())
-					{
-						list.add(Text.of("Permissions: "));
-						
-						for (Entry<String, Boolean> e : p.getSubjectData().getAllPermissions().get(SubjectData.GLOBAL_CONTEXT).entrySet())
-						{
-							list.add(Text.of("- " + e.getKey() + ": " + e.getValue().toString()));
-						}
-					}
-					
-					pages.contents(list);
-					pages.sendTo(src);
-				}
-				else
-				{
-					src.sendMessage(Text.of(lang.playerExist));
 				}
 			}
-			else
-			{
-				src.sendMessage(Text.of(lang.mustPlayerOnline));
-			}
+			
+			pages.contents(list);
+			pages.sendTo(src);
 		}
 		else if (opt.equalsIgnoreCase("player") && !args.hasAny("name"))
 		{
@@ -156,6 +143,36 @@ public class CmdInfo implements CommandExecutor
 		}
 		
 		return CommandResult.success();
+	}
+	
+	private List<Text> calculateRank(String rank)
+	{
+		List<Text> temp = new ArrayList<Text>();
+		
+		if (ranks.ranksMap.containsKey(rank))
+		{
+			if (ranks.ranksMap.get(rank).containsKey("inheritance"))
+			{
+				if (ranks.ranksMap.get(rank).get("inheritance").getString() != null)
+				{
+					temp.addAll(calculateRank(ranks.ranksMap.get(rank).get("inheritance").getString()));
+				}
+			}
+			
+			if (ranks.ranksMap.get(rank).containsKey("permissions"))
+			{
+				if (ranks.ranksMap.get(rank).get("permissions").hasMapChildren())
+				{
+					temp.add(Text.of("+ inheritance " + rank + ": "));
+					for (Entry<Object, ? extends CommentedConfigurationNode> e : ranks.ranksMap.get(rank).get("permissions").getChildrenMap().entrySet())
+					{
+						temp.add(Text.of("- " + e.getKey().toString() + ": " + e.getValue().getValue().toString()));
+					}
+				}
+			}
+		}
+		
+		return temp;
 	}
 
 }

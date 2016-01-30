@@ -86,9 +86,7 @@ public class RanksManager
 				{
 					for (Entry<Object, ? extends CommentedConfigurationNode> e : ranksMap.get(rank).get("permissions").getChildrenMap().entrySet())
 					{
-						ExtraPermissions.getPlugin().getLogger().info(e.getKey().toString() + ": " + e.getValue().getValue());
 						p.getSubjectData().setPermission(SubjectData.GLOBAL_CONTEXT, e.getKey().toString(), Tristate.fromBoolean(e.getValue().getBoolean()));
-						ExtraPermissions.getPlugin().getLogger().info(e.getKey().toString() + " || " + p.getSubjectData().getPermissions(SubjectData.GLOBAL_CONTEXT).get(e.getKey().toString()));
 					}
 				}
 			}

@@ -6,6 +6,7 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
@@ -28,39 +29,128 @@ public class CmdGroupExecutor implements CommandExecutor
 		
 		if (option.equalsIgnoreCase("prefix"))
 		{
-			ranks.get().getNode(name, option).setValue(value);
-			ranks.save();
-			ranks.loadByRank(name);
-			
-			String out = lang.newPrefixGroup.replace("%group%", name).replace("%prefix%", value);
-			
-			src.sendMessage(Text.of(out));
+			if (src instanceof Player)
+			{
+				String perm = "extraperm.experm.group." + name + ".prefix";
+				String permDef = null;
+				
+				if (name.equalsIgnoreCase(rm.getDefaultRank()))
+				{
+					permDef = "extraperm.experm.group.default.prefix";
+				}
+				
+				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				{
+					ranks.get().getNode(name, option).setValue(value);
+					ranks.save();
+					ranks.loadByRank(name);
+					
+					String out = lang.newPrefixGroup.replace("%group%", name).replace("%prefix%", value);
+					
+					src.sendMessage(Text.of(out));
+				}
+				else
+				{
+					String out = lang.dontHave.replace("%perm%", perm);
+					src.sendMessage(Text.of(out));
+				}
+			}
+			else
+			{
+				ranks.get().getNode(name, option).setValue(value);
+				ranks.save();
+				ranks.loadByRank(name);
+				
+				String out = lang.newPrefixGroup.replace("%group%", name).replace("%prefix%", value);
+				
+				src.sendMessage(Text.of(out));
+			}
 		}
 
 		if (option.equalsIgnoreCase("suffix"))
 		{
-			ranks.get().getNode(name, option).setValue(value);
-			ranks.save();
-			ranks.loadByRank(name);
-			
-			String out = lang.newSuffixGroup.replace("%group%", name).replace("%suffix%", value);
-			
-			src.sendMessage(Text.of(out));
+			if (src instanceof Player)
+			{
+				String perm = "extraperm.experm.group." + name + ".suffix";
+				String permDef = null;
+				
+				if (name.equalsIgnoreCase(rm.getDefaultRank()))
+				{
+					permDef = "extraperm.experm.group.default.suffix";
+				}
+				
+				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				{
+					ranks.get().getNode(name, option).setValue(value);
+					ranks.save();
+					ranks.loadByRank(name);
+					
+					String out = lang.newSuffixGroup.replace("%group%", name).replace("%suffix%", value);
+					
+					src.sendMessage(Text.of(out));
+				}
+				else
+				{
+					String out = lang.dontHave.replace("%perm%", perm);
+					src.sendMessage(Text.of(out));
+				}
+			}
+			else
+			{
+				ranks.get().getNode(name, option).setValue(value);
+				ranks.save();
+				ranks.loadByRank(name);
+				
+				String out = lang.newSuffixGroup.replace("%group%", name).replace("%suffix%", value);
+				
+				src.sendMessage(Text.of(out));
+			}
 		}
 		
 		if (option.equalsIgnoreCase("permission"))
 		{
 			if (args.hasAny("vale_perm"))
 			{
-				boolean bool = args.<Boolean>getOne("vale_perm").get();
-				
-				ranks.get().getNode(name, "permissions", value).setValue(bool);
-				ranks.save();
-				ranks.loadByRank(name);
-				
-				String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("%value%", bool + "");
-				
-				src.sendMessage(Text.of(out));
+				if (src instanceof Player)
+				{
+					String perm = "extraperm.experm.group." + name + ".permission";
+					String permDef = null;
+					
+					if (name.equalsIgnoreCase(rm.getDefaultRank()))
+					{
+						permDef = "extraperm.experm.group.default.permission";
+					}
+					
+					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					{
+						boolean bool = args.<Boolean>getOne("vale_perm").get();
+						
+						ranks.get().getNode(name, "permissions", value).setValue(bool);
+						ranks.save();
+						ranks.loadByRank(name);
+						
+						String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("%value%", bool + "");
+						
+						src.sendMessage(Text.of(out));
+					}
+					else
+					{
+						String out = lang.dontHave.replace("%perm%", perm);
+						src.sendMessage(Text.of(out));
+					}
+				}
+				else
+				{
+					boolean bool = args.<Boolean>getOne("vale_perm").get();
+					
+					ranks.get().getNode(name, "permissions", value).setValue(bool);
+					ranks.save();
+					ranks.loadByRank(name);
+					
+					String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("%value%", bool + "");
+					
+					src.sendMessage(Text.of(out));
+				}
 			}
 			else
 			{
@@ -70,25 +160,82 @@ public class CmdGroupExecutor implements CommandExecutor
 		
 		if (option.equalsIgnoreCase("inheritance"))
 		{
-			ranks.get().getNode(name, option).setValue(value);
-			ranks.save();
-			ranks.loadByRank(name);
-			
-			String out = lang.newInheGroup.replace("%group%", name).replace("%inhe%", value);
-			
-			src.sendMessage(Text.of(out));
+			if (src instanceof Player)
+			{
+				String perm = "extraperm.experm.group." + name + ".inheritance";
+				String permDef = null;
+				
+				if (name.equalsIgnoreCase(rm.getDefaultRank()))
+				{
+					permDef = "extraperm.experm.group.default.inheritance";
+				}
+				
+				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				{
+					ranks.get().getNode(name, option).setValue(value);
+					ranks.save();
+					ranks.loadByRank(name);
+					
+					String out = lang.newInheGroup.replace("%group%", name).replace("%inhe%", value);
+					
+					src.sendMessage(Text.of(out));
+				}
+				else
+				{
+					String out = lang.dontHave.replace("%perm%", perm);
+					src.sendMessage(Text.of(out));
+				}
+			}
+			else
+			{
+				ranks.get().getNode(name, option).setValue(value);
+				ranks.save();
+				ranks.loadByRank(name);
+				
+				String out = lang.newInheGroup.replace("%group%", name).replace("%inhe%", value);
+				
+				src.sendMessage(Text.of(out));
+			}
 		}
 		
 		if (option.equalsIgnoreCase("remove"))
 		{
-			
-			ranks.get().getNode(name).removeChild(value);
-			ranks.save();
-			ranks.loadByRank(name);
-			
-			String out = lang.removeValGroup.replace("%group%", name).replace("%value%", value);
-			
-			src.sendMessage(Text.of(out));
+			if (src instanceof Player)
+			{
+				String perm = "extraperm.experm.group." + name + ".remove." + value;
+				String permDef = null;
+				
+				if (name.equalsIgnoreCase(rm.getDefaultRank()))
+				{
+					permDef = "extraperm.experm.group.default.remove." + value;
+				}
+				
+				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				{
+					ranks.get().getNode(name).removeChild(value);
+					ranks.save();
+					ranks.loadByRank(name);
+					
+					String out = lang.removeValGroup.replace("%group%", name).replace("%value%", value);
+					
+					src.sendMessage(Text.of(out));
+				}
+				else
+				{
+					String out = lang.dontHave.replace("%perm%", perm);
+					src.sendMessage(Text.of(out));
+				}
+			}
+			else
+			{
+				ranks.get().getNode(name).removeChild(value);
+				ranks.save();
+				ranks.loadByRank(name);
+				
+				String out = lang.removeValGroup.replace("%group%", name).replace("%value%", value);
+				
+				src.sendMessage(Text.of(out));
+			}
 		}
 		
 		return CommandResult.success();
