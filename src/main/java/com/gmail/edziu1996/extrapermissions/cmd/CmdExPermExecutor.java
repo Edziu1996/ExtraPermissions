@@ -27,27 +27,27 @@ public class CmdExPermExecutor implements CommandExecutor
 		
 		List<Text> list = new ArrayList<Text>();
 		
-		if (src.hasPermission("ExtraPerm.experm.group"))
+		if (src.hasPermission("ExtraPerm.experm.group.use"))
 		{
 			list.add(Text.builder().append(Text.of("/experm group")).onClick(TextActions.suggestCommand("/experm group")).build());
 		}
 		
-		if (src.hasPermission("ExtraPerm.experm.reload"))
+		if (src.hasPermission("ExtraPerm.experm.reload.use"))
 		{
 			list.add(Text.builder().append(Text.of("/experm reload")).onClick(TextActions.suggestCommand("/experm reload")).build());
 		}
 		
-		if (src.hasPermission("ExtraPerm.experm.player"))
+		if (src.hasPermission("ExtraPerm.experm.player.use"))
 		{
 			list.add(Text.builder().append(Text.of("/experm player")).onClick(TextActions.suggestCommand("/experm player")).build());
 		}
 		
-		if (src.hasPermission("ExtraPerm.experm.uuid"))
+		if (src.hasPermission("ExtraPerm.experm.uuid.use"))
 		{
 			list.add(Text.builder().append(Text.of("/experm uuid")).onClick(TextActions.suggestCommand("/experm uuid")).build());
 		}
 		
-		if (src.hasPermission("ExtraPerm.experm.info"))
+		if (src.hasPermission("ExtraPerm.experm.info.use"))
 		{
 			list.add(Text.builder().append(Text.of("/experm info")).onClick(TextActions.suggestCommand("/experm info")).build());
 		}

@@ -26,49 +26,7 @@ public class ConfigRanks extends ConfigManager
 		
 		get().getNode("admin", "prefix").setValue("[Admin]");
 		get().getNode("admin", "inheritance").setValue("user");
-		get().getNode("admin", "permissions", "extraperm.build").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.use").setValue(true);
-		
-		//Admin Group
-		get().getNode("admin", "permissions", "extraperm.experm.group.admin.prefix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.admin.suffix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.admin.permission").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.admin.inheritance").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.admin.remove.prefix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.admin.remove.suffix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.admin.remove.permission").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.admin.remove.inheritance").setValue(true);
-		
-		//Default Group
-		get().getNode("admin", "permissions", "extraperm.experm.group.default.prefix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.default.suffix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.default.permission").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.default.inheritance").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.default.remove.prefix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.default.remove.suffix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.default.remove.permission").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.group.default.remove.inheritance").setValue(true);
-		
-		get().getNode("admin", "permissions", "extraperm.experm.player.use").setValue(true);
-		
-		//Admin Player
-		get().getNode("admin", "permissions", "extraperm.experm.player.admin.prefix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.admin.suffix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.admin.rank").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.admin.remove.prefix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.admin.remove.suffix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.admin.remove.rank").setValue(true);
-		
-		//Default Player
-		get().getNode("admin", "permissions", "extraperm.experm.player.default.prefix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.default.suffix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.default.rank").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.default.remove.prefix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.default.remove.suffix").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.player.default.remove.rank").setValue(true);
-		
-		get().getNode("admin", "permissions", "extraperm.experm.info.use").setValue(true);
-		get().getNode("admin", "permissions", "extraperm.experm.use").setValue(true);
+		get().getNode("admin", "permissions", "extraperm").setValue(true);
 	}
 	
 	@Override
