@@ -10,6 +10,7 @@ import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdExPermExecutor;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdGroupExecutor;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdInfo;
+import com.gmail.edziu1996.extrapermissions.cmd.CmdList;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdPlayerExecutor;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdReloadExecutor;
 import com.gmail.edziu1996.extrapermissions.cmd.CmdUUID;
@@ -62,15 +63,26 @@ public class CommandsManager
 			.executor(new CmdInfo())
 			.build();
 	
+	static CommandSpec cmdList = CommandSpec.builder()
+			.description(of("Show group/player list"))
+			.permission("extraperm.experm.list.use")
+			.arguments(
+					GenericArguments.string(of("option")),
+					GenericArguments.optional(GenericArguments.string(of("name")))
+					)
+			.executor(new CmdList())
+			.build();
+	
 	public static CommandSpec cmdExPerm = CommandSpec.builder()
 			.description(of("This is main command"))
 			.permission("extraperm.experm.use")
 			.executor(new CmdExPermExecutor())
-			.child(cmdGroup, "group")
-			.child(cmdPlayer, "player")
+			.child(cmdGroup, "group", "g")
+			.child(cmdPlayer, "player", "p")
 			.child(cmdReload, "reload", "rl")
 			.child(cmdUUIDs, "uuid", "id")
-			.child(cmdInfo, "info")
+			.child(cmdInfo, "info", "i")
+			.child(cmdList, "list", "l")
 			.build();
 	
 
