@@ -11,6 +11,7 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.service.pagination.PaginationBuilder;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
@@ -53,7 +54,7 @@ public class CmdList implements CommandExecutor
 		if (opt.equalsIgnoreCase("players") && !args.hasAny("name"))
 		{
 			PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
-			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Ranks: ")).build());
+			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Player: rank")).build());
 			
 			List<Text> list = new ArrayList<Text>();
 			
@@ -81,7 +82,7 @@ public class CmdList implements CommandExecutor
 		{
 			String name = args.<String>getOne("name").get();
 			PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
-			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Ranks: ")).build());
+			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Players from "+name+": ")).build());
 			
 			List<Text> list = new ArrayList<Text>();
 			
@@ -97,6 +98,27 @@ public class CmdList implements CommandExecutor
 					}
 				}
 				
+			}
+			
+			if (name.equalsIgnoreCase(rm.getDefaultRank()))
+			{
+				for (Player p : ExtraPermissions.getPlugin().getGame().getServer().getOnlinePlayers())
+				{
+					if (!list.contains(Text.of("- " + p.getName())))
+					{
+						if (players.playersMap.containsKey(p.getUniqueId().toString()))
+						{
+							if (!players.playersMap.get(p.getUniqueId().toString()).containsKey("rank"))
+							{
+								list.add(Text.of("- " + p.getName()));
+							}
+						}
+						else
+						{
+							list.add(Text.of("- " + p.getName()));
+						}
+					}
+				}
 			}
 			
 			pages.contents(list);
