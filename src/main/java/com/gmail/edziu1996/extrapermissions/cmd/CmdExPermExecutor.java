@@ -52,6 +52,11 @@ public class CmdExPermExecutor implements CommandExecutor
 			list.add(Text.builder().append(Text.of("/experm info")).onClick(TextActions.suggestCommand("/experm info")).build());
 		}
 		
+		if (src.hasPermission("ExtraPerm.experm.list.use"))
+		{
+			list.add(Text.builder().append(Text.of("/experm list")).onClick(TextActions.suggestCommand("/experm list")).build());
+		}
+		
 		pages.contents(list);
 		pages.sendTo(src);
 		

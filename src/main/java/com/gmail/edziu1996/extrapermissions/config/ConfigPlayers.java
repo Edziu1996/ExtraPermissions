@@ -20,12 +20,6 @@ public class ConfigPlayers extends ConfigManager
 	}
 	
 	@Override
-	public void populate()
-	{
-		
-	}
-	
-	@Override
 	public void init()
 	{
 		for (Entry<Object, ? extends CommentedConfigurationNode> e : get().getChildrenMap().entrySet())
