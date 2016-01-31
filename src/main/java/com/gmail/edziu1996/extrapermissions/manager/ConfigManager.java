@@ -58,6 +58,7 @@ public class ConfigManager
 				load();
 				populate();
 				save();
+				init();
 			}
 			catch (IOException e)
 			{
@@ -67,6 +68,7 @@ public class ConfigManager
 		else
 		{
 			load();
+			init();
 		}
 	}
 	
@@ -80,8 +82,6 @@ public class ConfigManager
 		{
 			e.printStackTrace();
 		}
-		
-		init();
 	}
 	
 	public void init() {}

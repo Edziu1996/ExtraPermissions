@@ -17,6 +17,7 @@ import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.service.permission.SubjectData;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.serializer.TextSerializers;
 
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
@@ -51,12 +52,19 @@ public class CmdInfo implements CommandExecutor
 				{
 					if (e.getKey().toString().equalsIgnoreCase("permissions"))
 					{
-						list.add(Text.of("Permissions: "));
+						list.add(Text.of(TextColors.AQUA, "Permissions: "));
 						list.addAll(calculateRank(name));
+					}
+					else if (e.getKey().toString().equalsIgnoreCase("prefix") || e.getKey().toString().equalsIgnoreCase("suffix"))
+					{
+						list.add(Text.builder()
+								.append(Text.of(TextColors.AQUA, e.getKey().toString() + ": ", TextColors.BLUE , e.getValue().getValue().toString()))
+								.append(Text.of(" (",TextSerializers.FORMATTING_CODE.deserialize(e.getValue().getValue().toString()), ")"))
+								.build());
 					}
 					else
 					{
-						list.add(Text.of(e.getKey().toString() + ": " + e.getValue().getValue().toString()));
+						list.add(Text.of(TextColors.AQUA, e.getKey().toString() + ": ", TextColors.BLUE, e.getValue().getValue().toString()));
 					}
 				}
 				
@@ -66,7 +74,7 @@ public class CmdInfo implements CommandExecutor
 			}
 			else
 			{
-				src.sendMessage(Text.of(lang.rankExist));
+				src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(lang.rankExist)));
 			}
 				
 		}
@@ -79,7 +87,7 @@ public class CmdInfo implements CommandExecutor
 			
 			for (String e : ranks.ranksMap.keySet())
 			{
-				list.add(Text.of("- " + e));
+				list.add(Text.of(TextColors.AQUA, "- " + e));
 			}
 			
 			pages.contents(list);
@@ -96,11 +104,32 @@ public class CmdInfo implements CommandExecutor
 			
 			List<Text> list = new ArrayList<Text>();
 			
-			if (players.playersMap.containsKey(NameAPI.getPlugin().getUUID(p).toString()))
+			String sid = null;
+			
+			if (p != null)
 			{
-				for (Entry<Object, ? extends CommentedConfigurationNode> e : players.playersMap.get(NameAPI.getPlugin().getUUID(p).toString()).entrySet())
+				sid = NameAPI.getPlugin().getUUID(p).toString();
+			}
+			else
+			{
+				sid = NameAPI.getPlugin().getPlayerUUIDFromName(name, game).toString();
+			}
+			
+			if (players.playersMap.containsKey(sid))
+			{
+				for (Entry<Object, ? extends CommentedConfigurationNode> e : players.playersMap.get(sid).entrySet())
 				{
-					list.add(Text.of(e.getKey().toString() + ": " + e.getValue().getValue().toString()));
+					if (e.getKey().toString().equalsIgnoreCase("prefix") || e.getKey().toString().equalsIgnoreCase("suffix"))
+					{
+						list.add(Text.builder()
+								.append(Text.of(TextColors.AQUA, e.getKey().toString() + ": ", TextColors.BLUE , e.getValue().getValue().toString()))
+								.append(Text.of(" (",TextSerializers.FORMATTING_CODE.deserialize(e.getValue().getValue().toString()), ")"))
+								.build());
+					}
+					else
+					{
+						list.add(Text.of(TextColors.AQUA, e.getKey().toString() + ": ", TextColors.BLUE , e.getValue().getValue().toString()));
+					}
 				}
 			}
 			
@@ -112,7 +141,23 @@ public class CmdInfo implements CommandExecutor
 					
 					for (Entry<String, Boolean> e : p.getSubjectData().getAllPermissions().get(SubjectData.GLOBAL_CONTEXT).entrySet())
 					{
-						list.add(Text.of("- " + e.getKey() + ": " + e.getValue().toString()));
+						String val = e.getValue().toString();
+						Text tx = Text.of(val);
+						
+						if (val.equalsIgnoreCase("true"))
+						{
+							tx = Text.of(TextColors.DARK_GREEN, val);
+						}
+						
+						if (val.equalsIgnoreCase("false"))
+						{
+							tx = Text.of(TextColors.RED, val);
+						}
+						
+						list.add(Text.builder().append(
+								Text.of(TextColors.AQUA, "- " + e.getKey().toString() + ": "))
+								.append(tx)
+								.build());
 					}
 				}
 			}
@@ -134,7 +179,7 @@ public class CmdInfo implements CommandExecutor
 				
 				if (name != null)
 				{
-					list.add(Text.of("- " + name));
+					list.add(Text.of(TextColors.AQUA, "- " + name));
 				}
 			}
 			
@@ -163,10 +208,26 @@ public class CmdInfo implements CommandExecutor
 			{
 				if (ranks.ranksMap.get(rank).get("permissions").hasMapChildren())
 				{
-					temp.add(Text.of("+ inheritance " + rank + ": "));
+					temp.add(Text.of(TextColors.AQUA, "+ inheritance " + rank + ": "));
 					for (Entry<Object, ? extends CommentedConfigurationNode> e : ranks.ranksMap.get(rank).get("permissions").getChildrenMap().entrySet())
 					{
-						temp.add(Text.of("- " + e.getKey().toString() + ": " + e.getValue().getValue().toString()));
+						String val = e.getValue().getValue().toString();
+						Text tx = Text.of(val);
+						
+						if (val.equalsIgnoreCase("true"))
+						{
+							tx = Text.of(TextColors.DARK_GREEN, val);
+						}
+						
+						if (val.equalsIgnoreCase("false"))
+						{
+							tx = Text.of(TextColors.RED, val);
+						}
+						
+						temp.add(Text.builder().append(
+								Text.of(TextColors.AQUA, "- " + e.getKey().toString() + ": "))
+								.append(tx)
+								.build());
 					}
 				}
 			}

@@ -26,6 +26,8 @@ public class RanksManager
 		UUID pid = pl.getUniqueId();
 		String id = pid.toString();
 		
+		pl.getSubjectData().clearPermissions();
+		
 		if (playersMap.containsKey(id) && playersMap.get(id).containsKey("rank"))
 		{
 			checkLastRank(pl);

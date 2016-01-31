@@ -8,6 +8,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.serializer.TextSerializers;
 
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
@@ -47,12 +48,12 @@ public class CmdGroupExecutor implements CommandExecutor
 					
 					String out = lang.newPrefixGroup.replace("%group%", name).replace("%prefix%", value);
 					
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 				else
 				{
 					String out = lang.dontHave.replace("%perm%", perm);
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 			}
 			else
@@ -63,7 +64,7 @@ public class CmdGroupExecutor implements CommandExecutor
 				
 				String out = lang.newPrefixGroup.replace("%group%", name).replace("%prefix%", value);
 				
-				src.sendMessage(Text.of(out));
+				src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 			}
 		}
 
@@ -87,12 +88,12 @@ public class CmdGroupExecutor implements CommandExecutor
 					
 					String out = lang.newSuffixGroup.replace("%group%", name).replace("%suffix%", value);
 					
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 				else
 				{
 					String out = lang.dontHave.replace("%perm%", perm);
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 			}
 			else
@@ -103,7 +104,7 @@ public class CmdGroupExecutor implements CommandExecutor
 				
 				String out = lang.newSuffixGroup.replace("%group%", name).replace("%suffix%", value);
 				
-				src.sendMessage(Text.of(out));
+				src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 			}
 		}
 		
@@ -131,12 +132,12 @@ public class CmdGroupExecutor implements CommandExecutor
 						
 						String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("%value%", bool + "");
 						
-						src.sendMessage(Text.of(out));
+						src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 					}
 					else
 					{
 						String out = lang.dontHave.replace("%perm%", perm);
-						src.sendMessage(Text.of(out));
+						src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 					}
 				}
 				else
@@ -149,12 +150,12 @@ public class CmdGroupExecutor implements CommandExecutor
 					
 					String out = lang.newPermGroup.replace("%group%", name).replace("%perm%", value).replace("%value%", bool + "");
 					
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 			}
 			else
 			{
-				src.sendMessage(Text.of("Usage: /experm <rank_name> permission <permission> <true|false>"));
+				src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize("Usage: /experm <rank_name> permission <permission> <true|false>")));
 			}
 		}
 		
@@ -178,12 +179,12 @@ public class CmdGroupExecutor implements CommandExecutor
 					
 					String out = lang.newInheGroup.replace("%group%", name).replace("%inhe%", value);
 					
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 				else
 				{
 					String out = lang.dontHave.replace("%perm%", perm);
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 			}
 			else
@@ -194,7 +195,7 @@ public class CmdGroupExecutor implements CommandExecutor
 				
 				String out = lang.newInheGroup.replace("%group%", name).replace("%inhe%", value);
 				
-				src.sendMessage(Text.of(out));
+				src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 			}
 		}
 		
@@ -218,12 +219,12 @@ public class CmdGroupExecutor implements CommandExecutor
 					
 					String out = lang.removeValGroup.replace("%group%", name).replace("%value%", value);
 					
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 				else
 				{
 					String out = lang.dontHave.replace("%perm%", perm);
-					src.sendMessage(Text.of(out));
+					src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 				}
 			}
 			else
@@ -234,7 +235,7 @@ public class CmdGroupExecutor implements CommandExecutor
 				
 				String out = lang.removeValGroup.replace("%group%", name).replace("%value%", value);
 				
-				src.sendMessage(Text.of(out));
+				src.sendMessage(Text.of(TextSerializers.FORMATTING_CODE.deserialize(out)));
 			}
 		}
 		

@@ -29,7 +29,7 @@ public class CmdUUID implements CommandExecutor
 		
 		for (GameProfile gp : ExtraPermissions.getPlugin().getGame().getServer().getGameProfileManager().getCachedProfiles())
 		{
-			list.add(Text.of(gp.getName() + " : " + gp.getUniqueId()));
+			list.add(Text.of(TextColors.GREEN + gp.getName() + " : "  + TextColors.BLUE + gp.getUniqueId()));
 		}
 		pages.contents(list);
 		pages.sendTo(src);

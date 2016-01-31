@@ -44,7 +44,7 @@ public class CmdList implements CommandExecutor
 			
 			for (String e : ranks.ranksMap.keySet())
 			{
-				list.add(Text.of("- " + e));
+				list.add(Text.of(TextColors.AQUA, "- " + e));
 			}
 			
 			pages.contents(list);
@@ -64,13 +64,13 @@ public class CmdList implements CommandExecutor
 				{
 					UUID uuid = UUID.fromString(e.getKey());
 					String playerName = NameAPI.getPlugin().getPlayerNameFormUUID(uuid, ExtraPermissions.getPlugin().getGame());
-					list.add(Text.of("- " + playerName + ": " + e.getValue().get("rank").getString()));
+					list.add(Text.of(TextColors.AQUA, "- " + playerName + ": ", TextColors.BLUE, e.getValue().get("rank").getString()));
 				}
 				else
 				{
 					UUID uuid = UUID.fromString(e.getKey());
 					String playerName = NameAPI.getPlugin().getPlayerNameFormUUID(uuid, ExtraPermissions.getPlugin().getGame());
-					list.add(Text.of("- " + playerName + ": " + rm.getDefaultRank()));
+					list.add(Text.of(TextColors.AQUA, "- " + playerName + ": ", TextColors.BLUE, rm.getDefaultRank()));
 				}
 				
 			}
@@ -82,12 +82,12 @@ public class CmdList implements CommandExecutor
 					{
 						if (!players.playersMap.get(p.getUniqueId().toString()).containsKey("rank"))
 						{
-							list.add(Text.of("- " + p.getName()));
+							list.add(Text.of(TextColors.AQUA, "- " + p.getName()));
 						}
 					}
 					else
 					{
-						list.add(Text.of("- " + p.getName()));
+						list.add(Text.of(TextColors.AQUA, "- " + p.getName()));
 					}
 				}
 			}
@@ -111,7 +111,7 @@ public class CmdList implements CommandExecutor
 					{
 						UUID uuid = UUID.fromString(e.getKey());
 						String playerName = NameAPI.getPlugin().getPlayerNameFormUUID(uuid, ExtraPermissions.getPlugin().getGame());
-						list.add(Text.of("- " + playerName));
+						list.add(Text.of(TextColors.AQUA, "- " + playerName));
 					}
 				}
 				
@@ -127,12 +127,12 @@ public class CmdList implements CommandExecutor
 						{
 							if (!players.playersMap.get(p.getUniqueId().toString()).containsKey("rank"))
 							{
-								list.add(Text.of("- " + p.getName()));
+								list.add(Text.of(TextColors.AQUA, "- " + p.getName()));
 							}
 						}
 						else
 						{
-							list.add(Text.of("- " + p.getName()));
+							list.add(Text.of(TextColors.AQUA, "- " + p.getName()));
 						}
 					}
 				}

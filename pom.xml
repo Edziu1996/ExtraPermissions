@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.gmail.edziu1996</groupId>
   <artifactId>ExtraPermissions</artifactId>
-  <version>0.4.8</version>
+  <version>0.4.9</version>
   
   <name>ExtraPermissions</name>
   
@@ -50,7 +50,7 @@
     <dependency>
     	<groupId>com.gmail.edziu1996</groupId>
     	<artifactId>NameAPI</artifactId>
-    	<version>0.2.6</version>
+    	<version>0.2.7</version>
     </dependency>
   </dependencies>
 
