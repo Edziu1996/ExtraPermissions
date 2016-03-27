@@ -25,7 +25,7 @@ public class MessageManager
 		String output = "[Console] ";
 		
 		String s = event.getRawMessage().toPlain();
-		String s2 = event.getMessage().get().toPlain().substring(event.getMessage().get().toPlain().indexOf(" ") + 1);
+		String s2 = event.getMessage().toPlain().substring(event.getMessage().toPlain().indexOf(" ") + 1);
 		
 		Text message = Text.of(input);
 		

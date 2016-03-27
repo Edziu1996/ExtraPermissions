@@ -31,11 +31,11 @@ public class EventManager
 	@Listener(order=Order.FIRST)
 	public void onMessageChat(MessageChannelEvent.Chat event)
 	{
-		if(!event.getMessage().isPresent()) { return; }
+		if(!event.getMessage().isEmpty()) { return; }
 		
 		MessageChannel channel = MessageChannel.TO_ALL;
 		
-		Text text = event.getMessage().get();
+		Text text = event.getMessage();
 		String str = TextSerializers.FORMATTING_CODE.serialize(text);
 		
 		Text msg = MessageManager.transformChatMessage(event, str.substring(str.indexOf(" ") + 1));

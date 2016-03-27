@@ -108,7 +108,7 @@ public class CmdGroupExecutor implements CommandExecutor
 			}
 		}
 		
-		if (option.equalsIgnoreCase("permission"))
+		if (option.equalsIgnoreCase("permission") || option.equalsIgnoreCase("perm"))
 		{
 			if (args.hasAny("vale_perm"))
 			{

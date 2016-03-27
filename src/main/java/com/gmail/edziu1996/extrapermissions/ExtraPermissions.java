@@ -1,5 +1,6 @@
 package com.gmail.edziu1996.extrapermissions;
 
+import java.lang.annotation.Annotation;
 import java.nio.file.Path;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
+import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 
 import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
@@ -22,13 +24,15 @@ import com.gmail.edziu1996.extrapermissions.manager.CommandsManager;
 import com.gmail.edziu1996.extrapermissions.manager.EventManager;
 import com.google.inject.Inject;
 
-@Plugin(id=ExtraPermissions.PluginInfo.ID,name=ExtraPermissions.PluginInfo.NAME,version=ExtraPermissions.PluginInfo.VERSION,dependencies=ExtraPermissions.PluginInfo.DEPENDENCIES)
+@Plugin(id=ExtraPermissions.PluginInfo.ID,name=ExtraPermissions.PluginInfo.NAME,version=ExtraPermissions.PluginInfo.VERSION)
 public class ExtraPermissions
 {
 	@Inject
 	private Logger logger;
 	
 	private static ExtraPermissions plugin;
+	
+	static int DEPE;
 	
 	@Inject
 	@ConfigDir(sharedRoot=false)
@@ -105,7 +109,35 @@ public class ExtraPermissions
 	{
 		public static final String ID = "ExtraPerm";
 		public static final String NAME = "ExtraPermissions";
-		public static final String VERSION = "0.4.9";
-		public static final String DEPENDENCIES = "required-after:NameAPI@[0.2.6,)";
+		public static final String VERSION = "0.6.0";
+		public final Dependency[] DEPENDENCIES = {
+				new Dependency()
+				{
+					public String version()
+					{
+						return "[0.3.0,)";
+					}
+					
+					public boolean optional()
+					{
+						return false;
+					}
+					
+					public String id()
+					{
+						return "NameAPI";
+					}
+
+					public Class<? extends Annotation> annotationType()
+					{
+						return null;
+					}
+					
+				}
+			};
+		
+		//public static final String[] DEPENDENCIES = new String [] {"required-after:NameAPI@[0.3.0,)"};
+		//TODO
+		//public static final Dependency DEPENDENCIES;
 	}
 }

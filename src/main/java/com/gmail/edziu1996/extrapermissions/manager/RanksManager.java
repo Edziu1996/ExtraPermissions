@@ -20,6 +20,7 @@ public class RanksManager
 	Map<String, Map<Object, ? extends CommentedConfigurationNode>> ranksMap = ExtraPermissions.getPlugin().ranksConf.ranksMap;
 	Map<String, Map<Object, ? extends CommentedConfigurationNode>> playersMap = ExtraPermissions.getPlugin().playersConf.playersMap;
 	ConfigPlayers playerConf = ExtraPermissions.getPlugin().playersConf;
+	Game game = ExtraPermissions.getPlugin().getGame();
 	
 	public void playerLoadRank(Player pl)
 	{
@@ -33,11 +34,15 @@ public class RanksManager
 			checkLastRank(pl);
 			String rank = playersMap.get(id).get("rank").getString();
 			calculateRank(pl, rank);
+			
+			loadIndividualPerm(pl);
 		}
 		else
 		{
 			String rank = getDefaultRank();
 			calculateRank(pl, rank);
+			
+			loadIndividualPerm(pl);
 		}
 	}
 	
@@ -87,6 +92,25 @@ public class RanksManager
 				if (ranksMap.get(rank).get("permissions").hasMapChildren())
 				{
 					for (Entry<Object, ? extends CommentedConfigurationNode> e : ranksMap.get(rank).get("permissions").getChildrenMap().entrySet())
+					{
+						p.getSubjectData().setPermission(SubjectData.GLOBAL_CONTEXT, e.getKey().toString(), Tristate.fromBoolean(e.getValue().getBoolean()));
+					}
+				}
+			}
+		}
+	}
+	
+	private void loadIndividualPerm(Player p)
+	{
+		String sid = p.getUniqueId().toString();
+		
+		if (playersMap.containsKey(sid))
+		{
+			if (playersMap.get(sid).containsKey("permissions"))
+			{
+				if (playersMap.get(sid).get("permissions").hasMapChildren())
+				{
+					for (Entry<Object, ? extends CommentedConfigurationNode> e : playersMap.get(sid).get("").getChildrenMap().entrySet())
 					{
 						p.getSubjectData().setPermission(SubjectData.GLOBAL_CONTEXT, e.getKey().toString(), Tristate.fromBoolean(e.getValue().getBoolean()));
 					}

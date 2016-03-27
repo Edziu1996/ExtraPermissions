@@ -12,7 +12,7 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.service.pagination.PaginationBuilder;
+import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -37,7 +37,7 @@ public class CmdList implements CommandExecutor
 		
 		if (opt.equalsIgnoreCase("groups"))
 		{
-			PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
+			PaginationList.Builder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
 			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Ranks: ")).build());
 			
 			List<Text> list = new ArrayList<Text>();
@@ -53,7 +53,7 @@ public class CmdList implements CommandExecutor
 		
 		if (opt.equalsIgnoreCase("players") && !args.hasAny("name"))
 		{
-			PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
+			PaginationList.Builder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
 			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Player: rank")).build());
 			
 			List<Text> list = new ArrayList<Text>();
@@ -98,7 +98,7 @@ public class CmdList implements CommandExecutor
 		else if (opt.equalsIgnoreCase("players") && args.hasAny("name"))
 		{
 			String name = args.<String>getOne("name").get();
-			PaginationBuilder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
+			PaginationList.Builder pages = ExtraPermissions.getPlugin().getGame().getServiceManager().provide(PaginationService.class).get().builder();
 			pages.title(Text.builder().color(TextColors.GREEN).append(Text.of(TextColors.AQUA, "Players from "+name+": ")).build());
 			
 			List<Text> list = new ArrayList<Text>();
