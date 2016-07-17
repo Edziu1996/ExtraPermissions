@@ -29,9 +29,16 @@ public class ConfigRanks extends ConfigManager
 		get().getNode("admin", "permissions", "extraperm").setValue(true);
 	}
 	
+	public void clearMap()
+	{
+		ranksMap.clear();
+	}
+	
 	@Override
 	public void init()
 	{
+		this.clearMap();
+		
 		for (Entry<Object, ? extends CommentedConfigurationNode> e : get().getChildrenMap().entrySet())
 		{
 			if (!e.getValue().getChildrenMap().isEmpty())

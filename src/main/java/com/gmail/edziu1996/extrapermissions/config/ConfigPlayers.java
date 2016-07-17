@@ -19,9 +19,16 @@ public class ConfigPlayers extends ConfigManager
 		super(name);
 	}
 	
+	public void clearMap()
+	{
+		playersMap.clear();
+	}
+	
 	@Override
 	public void init()
 	{
+		this.clearMap();
+		
 		for (Entry<Object, ? extends CommentedConfigurationNode> e : get().getChildrenMap().entrySet())
 		{
 			if (!e.getValue().getChildrenMap().isEmpty())
