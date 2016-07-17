@@ -1,6 +1,5 @@
 package com.gmail.edziu1996.extrapermissions;
 
-import java.lang.annotation.Annotation;
 import java.nio.file.Path;
 
 import org.slf4j.Logger;
@@ -24,15 +23,18 @@ import com.gmail.edziu1996.extrapermissions.manager.CommandsManager;
 import com.gmail.edziu1996.extrapermissions.manager.EventManager;
 import com.google.inject.Inject;
 
-@Plugin(id=ExtraPermissions.PluginInfo.ID,name=ExtraPermissions.PluginInfo.NAME,version=ExtraPermissions.PluginInfo.VERSION)
+@Plugin(
+	id=ExtraPermissions.PluginInfo.ID,
+	name=ExtraPermissions.PluginInfo.NAME,
+	version=ExtraPermissions.PluginInfo.VERSION,
+	dependencies=@Dependency(id="nameapi",version="[0.3.1,)")
+		)
 public class ExtraPermissions
 {
 	@Inject
 	private Logger logger;
 	
 	private static ExtraPermissions plugin;
-	
-	static int DEPE;
 	
 	@Inject
 	@ConfigDir(sharedRoot=false)
@@ -107,37 +109,8 @@ public class ExtraPermissions
 	
 	public class PluginInfo
 	{
-		public static final String ID = "ExtraPerm";
+		public static final String ID = "extraperm";
 		public static final String NAME = "ExtraPermissions";
-		public static final String VERSION = "0.6.0";
-		public final Dependency[] DEPENDENCIES = {
-				new Dependency()
-				{
-					public String version()
-					{
-						return "[0.3.0,)";
-					}
-					
-					public boolean optional()
-					{
-						return false;
-					}
-					
-					public String id()
-					{
-						return "NameAPI";
-					}
-
-					public Class<? extends Annotation> annotationType()
-					{
-						return null;
-					}
-					
-				}
-			};
-		
-		//public static final String[] DEPENDENCIES = new String [] {"required-after:NameAPI@[0.3.0,)"};
-		//TODO
-		//public static final Dependency DEPENDENCIES;
+		public static final String VERSION = "0.6.1";
 	}
 }

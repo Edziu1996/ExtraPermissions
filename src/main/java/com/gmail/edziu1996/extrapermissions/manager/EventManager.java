@@ -11,7 +11,6 @@ import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
-import org.spongepowered.api.text.serializer.TextSerializers;
 
 import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
 
@@ -28,20 +27,22 @@ public class EventManager
 		rm.playerLoadRank(pl);
 	}
 	
-	@Listener(order=Order.FIRST)
+	@Listener(order=Order.PRE)
 	public void onMessageChat(MessageChannelEvent.Chat event)
 	{
-		if(!event.getMessage().isEmpty()) { return; }
+		if(event.getMessage().isEmpty()) { return; }
 		
 		MessageChannel channel = MessageChannel.TO_ALL;
 		
-		Text text = event.getMessage();
-		String str = TextSerializers.FORMATTING_CODE.serialize(text);
-		
-		Text msg = MessageManager.transformChatMessage(event, str.substring(str.indexOf(" ") + 1));
-
-		event.setChannel(channel);
-		event.setMessage(msg);
+		if (event.getCause().first(Player.class).isPresent())
+		{
+			String text = event.getMessage().toPlain();
+			
+			Text msg = MessageManager.transformChatMessage(event, text.substring(text.indexOf(" ") + 1));
+			
+			event.setChannel(channel);
+			event.setMessage(msg);
+		}
 	}
 	
 	@Listener
