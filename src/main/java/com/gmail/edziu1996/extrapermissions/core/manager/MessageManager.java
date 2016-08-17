@@ -1,4 +1,4 @@
-package com.gmail.edziu1996.extrapermissions.manager;
+package com.gmail.edziu1996.extrapermissions.core.manager;
 
 import java.util.Map;
 
@@ -8,7 +8,10 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Text.Builder;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
+import com.gmail.edziu1996.extrapermissions.api.EPGroup;
+import com.gmail.edziu1996.extrapermissions.api.EPPlayer;
+import com.gmail.edziu1996.extrapermissions.api.Manager;
+import com.gmail.edziu1996.extrapermissions.core.ExtraPermissions;
 import com.gmail.edziu1996.nameapi.NameAPI;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -38,7 +41,9 @@ public class MessageManager
 		{
 			Player pl = event.getCause().first(Player.class).get();
 			
-			String rank = rm.getPlayerRank(pl);
+			EPPlayer player = Manager.getPlayer(pl.getUniqueId());
+			EPGroup group = player.getGroup();
+			String worldName = player.getPlayer().getWorld().getName();
 			
 			String playerName = pl.getName();
 			
@@ -46,8 +51,6 @@ public class MessageManager
 			{
 				playerName = NameAPI.getPlugin().getDisplayName(pl);
 			}
-			
-			String playerID = pl.getUniqueId().toString();
 			
 			String formula = ExtraPermissions.getPlugin().config.formule;
 			
@@ -59,13 +62,19 @@ public class MessageManager
 				}
 			}
 			
-			String world = pl.getWorld().getProperties().getWorldName().replace("DIM-1", "Nether").replace("DIM1", "The End");
+			String world = pl.getWorld().getName().replace("DIM-1", "Nether").replace("DIM1", "The End");
 			
-			String rank_prefix = getVal(ranksMap, rank, "prefix");
-			String rank_suffix = getVal(ranksMap, rank, "suffix");
+			String rank_prefix = group.getPrefix();
+			String rank_suffix = group.getSuffix();
 			
-			String player_prefix = getVal(playerMap, playerID, "prefix");
-			String player_suffix = getVal(playerMap, playerID, "suffix");
+			rank_prefix = group.getPrefixWithWorld(worldName);
+			rank_suffix = group.getSuffixWithWorld(worldName);
+			
+			String player_prefix = player.getPrefix();
+			String player_suffix = player.getSuffix();
+			
+			player_prefix = player.getPrefixWithWorld(worldName);
+			player_suffix = player.getSuffixWithWorld(worldName);
 			
 			output = convert(output, "%player%", playerName);
 			output = convert(output, "%world%", world);
@@ -85,32 +94,6 @@ public class MessageManager
 				.build();
 		
 		return messageBuild.append(Text.of(text)).build();
-	}
-
-	private static String getVal(Map<String, Map<Object, ? extends CommentedConfigurationNode>> map, String rank, String key)
-	{
-		if (map != null)
-		{
-			if (map.containsKey(rank))
-			{
-				if (map.get(rank).containsKey(key))
-				{
-					return map.get(rank).get(key).getString();
-				}
-				else
-				{
-					return null;
-				}
-			}
-			else
-			{
-				return null;
-			}
-		}
-		else
-		{
-			return null;
-		}
 	}
 
 	private static String convert(String input, String name, String repl)

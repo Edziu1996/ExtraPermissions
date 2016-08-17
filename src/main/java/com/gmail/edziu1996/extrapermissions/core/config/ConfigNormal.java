@@ -1,9 +1,10 @@
-package com.gmail.edziu1996.extrapermissions.config;
+package com.gmail.edziu1996.extrapermissions.core.config;
 
-import com.gmail.edziu1996.extrapermissions.manager.ConfigManager;
+import com.gmail.edziu1996.extrapermissions.api.ConfigManager;
 
 public class ConfigNormal extends ConfigManager
 {
+	public String defaultRank = "user";
 	public String formule = "<%player%> ";
 	public String lang = "en_US";
 
@@ -19,29 +20,33 @@ public class ConfigNormal extends ConfigManager
 		.setValue("%world%%rank_prefix%%player_prefix%%player%%player_suffix%%rank_suffix%: ")
 		.setComment("%world% - world name; %rank_prefix%,%rank_suffix% - rank prefix and suffix; %player_prefix%,%player_suffix% - player suffix and prefix; %player% - player name");
 		get().getNode("lang").setValue("en_US");
+		get().getNode("defaultRank").setValue("user");
 	}
 	
 	@Override
 	public void init()
 	{
-		String temp = get().getNode("chat", "formula").getString();
-		
-		if (temp != null)
+		formule = check(get().getNode("chat", "formula").getString(), formule);
+		lang = check(get().getNode("lang").getString(), lang);
+		defaultRank = check(get().getNode("defaultRank").getString(), defaultRank);
+	}
+	
+	private String check(String s1, String defaults)
+	{
+		if (s1 != null)
 		{
-			if (temp.length() > 0)
+			if (s1.length() > 0)
 			{
-				formule = temp;
+				return s1;
+			}
+			else
+			{
+				return defaults;
 			}
 		}
-		
-		String temp2 = get().getNode("lang").getString();
-		
-		if (temp2 != null)
+		else
 		{
-			if (temp2.length() > 0)
-			{
-				lang = temp2;
-			}
+			return defaults;
 		}
 	}
 

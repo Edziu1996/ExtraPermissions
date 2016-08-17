@@ -1,33 +1,39 @@
-package com.gmail.edziu1996.extrapermissions;
+package com.gmail.edziu1996.extrapermissions.core;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
 import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.service.user.UserStorageService;
 
-import com.gmail.edziu1996.extrapermissions.config.ConfigLang;
-import com.gmail.edziu1996.extrapermissions.config.ConfigNormal;
-import com.gmail.edziu1996.extrapermissions.config.ConfigPlayers;
-import com.gmail.edziu1996.extrapermissions.config.ConfigRanks;
-import com.gmail.edziu1996.extrapermissions.manager.CommandsManager;
-import com.gmail.edziu1996.extrapermissions.manager.EventManager;
+import com.gmail.edziu1996.extrapermissions.api.Manager;
+import com.gmail.edziu1996.extrapermissions.core.config.ConfigLang;
+import com.gmail.edziu1996.extrapermissions.core.config.ConfigNormal;
+import com.gmail.edziu1996.extrapermissions.core.config.ConfigPlayers;
+import com.gmail.edziu1996.extrapermissions.core.config.ConfigRanks;
+import com.gmail.edziu1996.extrapermissions.core.manager.CommandsManager;
+import com.gmail.edziu1996.extrapermissions.core.manager.EventManager;
+import com.gmail.edziu1996.extrapermissions.core.manager.RanksManager;
 import com.google.inject.Inject;
 
 @Plugin(
 	id=ExtraPermissions.PluginInfo.ID,
 	name=ExtraPermissions.PluginInfo.NAME,
 	version=ExtraPermissions.PluginInfo.VERSION,
-	dependencies=@Dependency(id="nameapi",version="[0.3.1,)")
+	dependencies=@Dependency(id="nameapi",version="[0.3.2,)")
 		)
 public class ExtraPermissions
 {
@@ -68,12 +74,17 @@ public class ExtraPermissions
 	@Listener
 	public void init(GameInitializationEvent event)
 	{
+		Manager.initGroup();
+		
 		game.getEventManager().registerListeners(this, new EventManager());
 		CommandsManager.load(game);
 	}
 	
 	@Listener
-	public void postInit(GamePostInitializationEvent event) {}
+	public void postInit(GamePostInitializationEvent event)
+	{
+		 
+	}
 	
 	@Listener
 	public void onServerStart(GameStartedServerEvent event)
@@ -85,6 +96,41 @@ public class ExtraPermissions
 	public void onServerStop(GameStoppedServerEvent event)
 	{
 		logger.info("This plugin has stopped!");
+	}
+	
+	UserStorageService service;
+	
+	@Listener
+	public void onServerLoad(GameLoadCompleteEvent event)
+	{
+		Optional<UserStorageService> userss = game.getServiceManager().provide(UserStorageService.class);
+		
+		if (userss.isPresent())
+		{
+			service = userss.get();
+			
+			Manager.initPlayers();
+		}
+	}
+	
+	public UserStorageService getUserStorageService()
+	{
+		return service;
+	}
+	
+	@Listener
+	public void onReload(GameReloadEvent event)
+	{
+		playersConf.setup();
+		ranksConf.setup();
+		config.setup();
+		langConf.setup();
+		
+		Manager.reload();
+		
+		
+		RanksManager rm = new RanksManager();
+		rm.realodRanks(ExtraPermissions.getPlugin().getGame());
 	}
 	
 	public static ExtraPermissions getPlugin()
@@ -111,6 +157,6 @@ public class ExtraPermissions
 	{
 		public static final String ID = "extraperm";
 		public static final String NAME = "ExtraPermissions";
-		public static final String VERSION = "0.6.2";
+		public static final String VERSION = "0.7.0";
 	}
 }

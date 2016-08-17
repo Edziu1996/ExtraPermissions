@@ -1,12 +1,14 @@
-package com.gmail.edziu1996.extrapermissions.config;
+package com.gmail.edziu1996.extrapermissions.core.config;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.spongepowered.api.entity.living.player.Player;
 
-import com.gmail.edziu1996.extrapermissions.manager.ConfigManager;
+import com.gmail.edziu1996.extrapermissions.api.ConfigManager;
+import com.gmail.edziu1996.extrapermissions.api.EPPlayer;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
@@ -42,9 +44,9 @@ public class ConfigPlayers extends ConfigManager
 		}
 	}
 
-	public void loadByPlayer(Player p)
+	public void loadByPlayer(UUID id)
 	{
-		String sid = p.getUniqueId().toString();
+		String sid = id.toString();
 		
 		if (get().hasMapChildren())
 		{
@@ -59,4 +61,16 @@ public class ConfigPlayers extends ConfigManager
 			}
 		}
 	}
+	
+	public void loadByPlayer(EPPlayer p)
+	{
+		loadByPlayer(p.getPlayer());
+	}
+	
+	public void loadByPlayer(Player p)
+	{
+		loadByPlayer(p.getUniqueId());
+	}
+	
+	
 }

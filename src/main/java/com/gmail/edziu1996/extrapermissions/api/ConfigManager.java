@@ -1,11 +1,11 @@
-package com.gmail.edziu1996.extrapermissions.manager;
+package com.gmail.edziu1996.extrapermissions.api;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.gmail.edziu1996.extrapermissions.ExtraPermissions;
+import com.gmail.edziu1996.extrapermissions.core.ExtraPermissions;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
