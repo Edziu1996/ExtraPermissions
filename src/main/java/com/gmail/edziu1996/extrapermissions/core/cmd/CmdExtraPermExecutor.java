@@ -49,7 +49,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		if (option != null)
 		{
-			if (option.equalsIgnoreCase("group") || option.equalsIgnoreCase("g"))
+			if (src.hasPermission("ExtraPerm.experm.group.use") && (option.equalsIgnoreCase("group") || option.equalsIgnoreCase("g")))
 			{
 				if (world != null)
 				{
@@ -60,7 +60,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 					return cmdGroup(src, args);
 				}
 			}
-			else if (option.equalsIgnoreCase("player") || option.equalsIgnoreCase("p"))
+			else if (src.hasPermission("ExtraPerm.experm.player.use") && (option.equalsIgnoreCase("player") || option.equalsIgnoreCase("p")))
 			{
 				if (world != null)
 				{
@@ -71,15 +71,15 @@ public class CmdExtraPermExecutor implements CommandExecutor
 					return cmdPlayer(src, args);
 				}
 			}
-			else if (option.equalsIgnoreCase("reload") || option.equalsIgnoreCase("rl"))
+			else if (src.hasPermission("ExtraPerm.experm.reload.use") && (option.equalsIgnoreCase("reload") || option.equalsIgnoreCase("rl")))
 			{
 				return cmdReload(src, args);
 			}
-			else if (option.equalsIgnoreCase("uuid") || option.equalsIgnoreCase("id"))
+			else if (src.hasPermission("ExtraPerm.experm.uuid.use") && (option.equalsIgnoreCase("uuid") || option.equalsIgnoreCase("id")))
 			{
 				return cmdUUID(src, args);
 			}
-			else if (option.equalsIgnoreCase("info") || option.equalsIgnoreCase("i"))
+			else if (src.hasPermission("ExtraPerm.experm.info.use") && (option.equalsIgnoreCase("info") || option.equalsIgnoreCase("i")))
 			{
 				if (world != null)
 				{
@@ -90,7 +90,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 					return cmdInfo(src, args);
 				}
 			}
-			else if (option.equalsIgnoreCase("list") || option.equalsIgnoreCase("l"))
+			else if (src.hasPermission("ExtraPerm.experm.list.use") && (option.equalsIgnoreCase("list") || option.equalsIgnoreCase("l")))
 			{
 				if (world != null)
 				{
@@ -212,16 +212,9 @@ public class CmdExtraPermExecutor implements CommandExecutor
 				
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".permission";
-					String permDef = null;
+					String perm = "extraperm.experm.player.permission";
 					
-					if (rName.equals(Manager.getDefaultGroupName()))
-					{
-						permDef = "extraperm.experm.player.default.permission";
-					}
-					
-					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					if (src.hasPermission(perm))
 					{
 						players.get().getNode(sid, "permissions", value).setValue(bool);
 						players.save();
@@ -269,16 +262,9 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".prefix";
-					String permDef = null;
+					String perm = "extraperm.experm.player.prefix";
 					
-					if (rName.equalsIgnoreCase(Manager.getDefaultGroupName()))
-					{
-						permDef = "extraperm.experm.player.default.prefix";
-					}
-					
-					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					if (src.hasPermission(perm))
 					{
 						players.get().getNode(sid, option).setValue(value);
 						players.save();
@@ -317,16 +303,9 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".suffix";
-					String permDef = null;
+					String perm = "extraperm.experm.player.suffix";
 					
-					if (rName.equalsIgnoreCase(Manager.getDefaultGroupName()))
-					{
-						permDef = "extraperm.experm.player.default.suffix";
-					}
-					
-					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					if (src.hasPermission(perm))
 					{
 						players.get().getNode(sid, option).setValue(value);
 						players.save();
@@ -365,27 +344,27 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".remove.rank";
-					String perm2 = "extraperm.experm.player." + value + ".setrank";
+					EPPlayer player = Manager.getPlayer(p.getUniqueId());
+					
+					String perm = "extraperm.experm.player.remove.rank." + player.getGroupName();
+					String perm2 = "extraperm.experm.player.rank." + value;
 					
 					String perm2Def = null;
 					
-					if (value.equalsIgnoreCase(Manager.getDefaultGroupName()))
+					if (value.equals(Manager.getDefaultGroupName()))
 					{
-						perm2Def = "extraperm.experm.player.default.setrank";
+						perm2Def = "extraperm.experm.player.rank.default";
 					}
 					
 					String permDef = null;
 					
-					if (value.equalsIgnoreCase(Manager.getDefaultGroupName()))
+					if (player.getGroupName().equals(Manager.getDefaultGroupName()))
 					{
-						permDef = "extraperm.experm.player.default.remove.rank";
+						permDef = "extraperm.experm.player.remove.rank.default";
 					}
 					
 					if ((src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false)) && (src.hasPermission(perm2) || (perm2Def != null ? src.hasPermission(perm2Def) : false)))
 					{
-						EPPlayer player = Manager.getPlayer(p.getUniqueId());
 						setRank(args, player, src, name, value);
 					}
 					else
@@ -405,16 +384,76 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".remove." + value;
+					String perm = "extraperm.experm.player.remove." + value;
 					String perm2 = null;
 					
-					if (rName.equalsIgnoreCase(Manager.getDefaultGroupName()))
+					if (value.equals("rank"))
 					{
-						perm2 = "extraperm.experm.player.default.remove." + value;
+						EPPlayer player = Manager.getPlayer(p.getUniqueId());
+						
+						perm = "extraperm.experm.player.remove.rank." + player.getGroupName();
+						
+						if (player.getGroupName().equals(Manager.getDefaultGroupName()))
+						{
+							perm2 = "extraperm.experm.player.remove.rank.default";
+						}
 					}
 					
 					if (src.hasPermission(perm) || (perm2 != null ? src.hasPermission(perm2) : false))
+					{
+						if (args.hasAny("value2") && value.equals("permission"))
+						{
+							players.get().getNode(sid).removeChild(args.<String>getOne("value2").get());
+							players.save();
+							players.loadByPlayer(p);
+
+							Manager.getPlayer(p.getUniqueId()).reload();
+							
+							rm.playerLoadRank(Manager.getPlayer(p.getUniqueId()));
+							
+							String out = lang.removeValPlayer.replace("%name%", name).replace("%value%", args.<String>getOne("value2").get());
+							
+							sendMessage(src, out);
+						}
+						else
+						{
+							players.get().getNode(sid).removeChild(value);
+							players.save();
+							players.loadByPlayer(p);
+
+							Manager.getPlayer(p.getUniqueId()).reload();
+							
+							rm.playerLoadRank(Manager.getPlayer(p.getUniqueId()));
+							
+							String out = lang.removeValPlayer.replace("%name%", name).replace("%value%", value);
+							
+							sendMessage(src, out);
+						}
+						
+					}
+					else
+					{
+						String out = lang.dontHave.replace("%perm%", perm);
+						sendMessage(src, out);
+					}
+				}
+				else
+				{
+					if (args.hasAny("value2") && value.equals("permission"))
+					{
+						players.get().getNode(sid).removeChild(args.<String>getOne("value2").get());
+						players.save();
+						players.loadByPlayer(p);
+
+						Manager.getPlayer(p.getUniqueId()).reload();
+						
+						rm.playerLoadRank(Manager.getPlayer(p.getUniqueId()));
+						
+						String out = lang.removeValPlayer.replace("%name%", name).replace("%value%", args.<String>getOne("value2").get());
+						
+						sendMessage(src, out);
+					}
+					else
 					{
 						players.get().getNode(sid).removeChild(value);
 						players.save();
@@ -428,25 +467,6 @@ public class CmdExtraPermExecutor implements CommandExecutor
 						
 						sendMessage(src, out);
 					}
-					else
-					{
-						String out = lang.dontHave.replace("%perm%", perm);
-						sendMessage(src, out);
-					}
-				}
-				else
-				{
-					players.get().getNode(sid).removeChild(value);
-					players.save();
-					players.loadByPlayer(p);
-
-					Manager.getPlayer(p.getUniqueId()).reload();
-					
-					rm.playerLoadRank(Manager.getPlayer(p.getUniqueId()));
-					
-					String out = lang.removeValPlayer.replace("%name%", name).replace("%value%", value);
-					
-					sendMessage(src, out);
 				}
 				
 			}
@@ -463,6 +483,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		}
 		return CommandResult.success();
 	}
+	
 
 	private CommandResult cmdPlayer(CommandSource src, CommandContext args, String world)
 	{
@@ -488,16 +509,9 @@ public class CmdExtraPermExecutor implements CommandExecutor
 				
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".permission." + world;
-					String permDef = null;
+					String perm = "extraperm.experm.player.permission." + world;
 					
-					if (rName.equals(Manager.getDefaultGroupName()))
-					{
-						permDef = "extraperm.experm.player.default.permission." + world;
-					}
-					
-					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					if (src.hasPermission(perm))
 					{
 						players.get().getNode(sid, world, "permissions", value).setValue(bool);
 						players.save();
@@ -545,16 +559,9 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".prefix." + world;
-					String permDef = null;
+					String perm = "extraperm.experm.player.prefix." + world;
 					
-					if (rName.equalsIgnoreCase(Manager.getDefaultGroupName()))
-					{
-						permDef = "extraperm.experm.player.default.prefix." + world;
-					}
-					
-					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					if (src.hasPermission(perm))
 					{
 						players.get().getNode(sid, world, option).setValue(value);
 						players.save();
@@ -593,16 +600,9 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".suffix." + world;
-					String permDef = null;
+					String perm = "extraperm.experm.player.suffix." + world;
 					
-					if (rName.equalsIgnoreCase(Manager.getDefaultGroupName()))
-					{
-						permDef = "extraperm.experm.player.default.suffix." + world;
-					}
-					
-					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					if (src.hasPermission(perm))
 					{
 						players.get().getNode(sid, world, option).setValue(value);
 						players.save();
@@ -637,60 +637,73 @@ public class CmdExtraPermExecutor implements CommandExecutor
 					sendMessage(p, out2);
 				}
 			}
-			else if (option.equalsIgnoreCase("rank"))
+			else if (option.equalsIgnoreCase("remove"))
 			{
 				if (src instanceof Player)
 				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".remove.rank";
-					String perm2 = "extraperm.experm.player." + value + ".setrank";
+					String perm = "extraperm.experm.player.remove." + value + "." + world;
+					String perm2 = null;
 					
-					String perm2Def = null;
-					
-					if (value.equalsIgnoreCase(Manager.getDefaultGroupName()))
+					if (world.equals(game.getServer().getDefaultWorldName()))
 					{
-						perm2Def = "extraperm.experm.player.default.setrank";
+						perm2 = "extraperm.experm.player.remove." + value + ".dafault";
 					}
 					
-					String permDef = null;
-					
-					if (value.equalsIgnoreCase(Manager.getDefaultGroupName()))
+					if (src.hasPermission(perm) || (perm2 != null ? src.hasPermission(perm2) : false))
 					{
-						permDef = "extraperm.experm.player.default.remove.rank";
-					}
-					
-					if ((src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false)) && (src.hasPermission(perm2) || (perm2Def != null ? src.hasPermission(perm2Def) : false)))
-					{
-						EPPlayer player = Manager.getPlayer(p.getUniqueId());
-						setRank(args, player, src, name, value);
+						
+						if (args.hasAny("value2") && value.equals("permission"))
+						{
+							players.get().getNode(sid, world, "permission").removeChild(args.<String>getOne("value2").get());
+							players.save();
+							players.loadByPlayer(p);
+
+							Manager.getPlayer(p.getUniqueId()).reload();
+							
+							rm.playerLoadRank(Manager.getPlayer(p.getUniqueId()));
+							
+							String out = lang.removeValWorldPlayer.replace("%name%", name).replace("%value%", args.<String>getOne("value2").get()).replace("%world%", world);
+							
+							sendMessage(src, out);
+						}
+						else
+						{
+							players.get().getNode(sid, world).removeChild(value);
+							players.save();
+							players.loadByPlayer(p);
+
+							Manager.getPlayer(p.getUniqueId()).reload();
+							
+							rm.playerLoadRank(Manager.getPlayer(p.getUniqueId()));
+							
+							String out = lang.removeValWorldPlayer.replace("%name%", name).replace("%value%", value).replace("%world%", world);
+							
+							sendMessage(src, out);
+						}
 					}
 					else
 					{
-						String out = lang.dontHave.replace("%perm%", perm) + "and " + perm2;
+						String out = lang.dontHave.replace("%perm%", perm);
 						sendMessage(src, out);
 					}
 				}
 				else
 				{
-					EPPlayer player = Manager.getPlayer(p.getUniqueId());
-					setRank(args, player, src, name, value);
-				}
-				
-			}
-			else if (option.equalsIgnoreCase("remove"))
-			{
-				if (src instanceof Player)
-				{
-					String rName = Manager.getPlayer(p.getUniqueId()).getGroupName();
-					String perm = "extraperm.experm.player." + rName + ".remove." + value + "." + world;
-					String perm2 = null;
-					
-					if (rName.equalsIgnoreCase(Manager.getDefaultGroupName()))
+					if (args.hasAny("value2") && value.equals("permission"))
 					{
-						perm2 = "extraperm.experm.player.default.remove." + value + "." + world;
+						players.get().getNode(sid, world, "permissions").removeChild(args.<String>getOne("value2").get());
+						players.save();
+						players.loadByPlayer(p);
+
+						Manager.getPlayer(p.getUniqueId()).reload();
+						
+						rm.playerLoadRank(Manager.getPlayer(p.getUniqueId()));
+						
+						String out = lang.removeValWorldPlayer.replace("%name%", name).replace("%value%", args.<String>getOne("value2").get()).replace("%world%", world);
+						
+						sendMessage(src, out);
 					}
-					
-					if (src.hasPermission(perm) || (perm2 != null ? src.hasPermission(perm2) : false))
+					else
 					{
 						players.get().getNode(sid, world).removeChild(value);
 						players.save();
@@ -704,25 +717,6 @@ public class CmdExtraPermExecutor implements CommandExecutor
 						
 						sendMessage(src, out);
 					}
-					else
-					{
-						String out = lang.dontHave.replace("%perm%", perm);
-						sendMessage(src, out);
-					}
-				}
-				else
-				{
-					players.get().getNode(sid, world).removeChild(value);
-					players.save();
-					players.loadByPlayer(p);
-
-					Manager.getPlayer(p.getUniqueId()).reload();
-					
-					rm.playerLoadRank(Manager.getPlayer(p.getUniqueId()));
-					
-					String out = lang.removeValWorldPlayer.replace("%name%", name).replace("%value%", value).replace("%world%", world);
-					
-					sendMessage(src, out);
 				}
 				
 			}
@@ -739,6 +733,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		}
 		return CommandResult.success();
 	}
+	
 	
 	private CommandResult cmdList(CommandSource src, CommandContext args)
 	{
@@ -822,6 +817,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		return CommandResult.success();
 	}
+	
 
 	private CommandResult cmdList(CommandSource src, CommandContext args, String world)
 	{
@@ -912,6 +908,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		return CommandResult.success();
 	}
+	
 	
 	private CommandResult cmdGroup(CommandSource src, CommandContext args)
 	{
@@ -1128,7 +1125,58 @@ public class CmdExtraPermExecutor implements CommandExecutor
 					permDef = "extraperm.experm.group.default.remove." + value;
 				}
 				
+				
 				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				{
+					if (args.hasAny("value2") && value.equals("permission"))
+					{
+						ranks.get().getNode(name, "permissions").removeChild(args.<String>getOne("value2").get());
+						ranks.save();
+						ranks.loadByRank(name);
+						
+						Manager.getGroup(name).reload();
+						Manager.reloadPlayersByRank(name);
+						
+						String out = lang.removeValGroup.replace("%group%", name).replace("%value%", args.<String>getOne("value2").get());
+						
+						sendMessage(src, out);
+					}
+					else
+					{
+						ranks.get().getNode(name).removeChild(value);
+						ranks.save();
+						ranks.loadByRank(name);
+						
+						Manager.getGroup(name).reload();
+						Manager.reloadPlayersByRank(name);
+						
+						String out = lang.removeValGroup.replace("%group%", name).replace("%value%", value);
+						
+						sendMessage(src, out);
+					}
+				}
+				else
+				{
+					String out = lang.dontHave.replace("%perm%", perm);
+					sendMessage(src, out);
+				}
+			}
+			else
+			{
+				if (args.hasAny("value2") && value.equals("permission"))
+				{
+					ranks.get().getNode(name).removeChild(args.<String>getOne("value2").get());
+					ranks.save();
+					ranks.loadByRank(name);
+					
+					Manager.getGroup(name).reload();
+					Manager.reloadPlayersByRank(name);
+					
+					String out = lang.removeValGroup.replace("%group%", name).replace("%value%", args.<String>getOne("value2").get());
+					
+					sendMessage(src, out);
+				}
+				else
 				{
 					ranks.get().getNode(name).removeChild(value);
 					ranks.save();
@@ -1141,24 +1189,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 					
 					sendMessage(src, out);
 				}
-				else
-				{
-					String out = lang.dontHave.replace("%perm%", perm);
-					sendMessage(src, out);
-				}
-			}
-			else
-			{
-				ranks.get().getNode(name).removeChild(value);
-				ranks.save();
-				ranks.loadByRank(name);
 				
-				Manager.getGroup(name).reload();
-				Manager.reloadPlayersByRank(name);
-				
-				String out = lang.removeValGroup.replace("%group%", name).replace("%value%", value);
-				
-				sendMessage(src, out);
 			}
 		}
 		else
@@ -1169,6 +1200,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		return CommandResult.success();
 	}
+	
 
 	private CommandResult cmdGroup(CommandSource src, CommandContext args, String world)
 	{
@@ -1188,13 +1220,25 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				String perm = "extraperm.experm.group." + name + ".prefix." + world;
 				String permDef = null;
+				String perm2Def = null;
+				String perm3Def = null;
 				
-				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && !world.equals(game.getServer().getDefaultWorldName()))
 				{
 					permDef = "extraperm.experm.group.default.prefix." + world;
 				}
 				
-				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && world.equals(game.getServer().getDefaultWorldName()))
+				{
+					perm2Def = "extraperm.experm.group.default.prefix.default";
+				}
+				
+				if (world.equals(game.getServer().getDefaultWorldName()) && !name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+				{
+					perm3Def = "extraperm.experm.group." + name + ".prefix.default";
+				}
+				
+				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false) || (perm2Def != null ? src.hasPermission(perm2Def) : false) || (perm3Def != null ? src.hasPermission(perm3Def) : false))
 				{
 					ranks.get().getNode(name, world, option).setValue(value);
 					ranks.save();
@@ -1233,13 +1277,25 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				String perm = "extraperm.experm.group." + name + ".suffix." + world;
 				String permDef = null;
+				String perm2Def = null;
+				String perm3Def = null;
 				
-				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && !world.equals(game.getServer().getDefaultWorldName()))
 				{
 					permDef = "extraperm.experm.group.default.suffix." + world;
 				}
 				
-				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && world.equals(game.getServer().getDefaultWorldName()))
+				{
+					perm2Def = "extraperm.experm.group.default.suffix.default";
+				}
+				
+				if (world.equals(game.getServer().getDefaultWorldName()) && !name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+				{
+					perm3Def = "extraperm.experm.group." + name + ".suffix.default";
+				}
+				
+				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false) || (perm2Def != null ? src.hasPermission(perm2Def) : false) || (perm3Def != null ? src.hasPermission(perm3Def) : false))
 				{
 					ranks.get().getNode(name, world, option).setValue(value);
 					ranks.save();
@@ -1280,13 +1336,25 @@ public class CmdExtraPermExecutor implements CommandExecutor
 				{
 					String perm = "extraperm.experm.group." + name + ".permission." + world;
 					String permDef = null;
+					String perm2Def = null;
+					String perm3Def = null;
 					
-					if (name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+					if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && !world.equals(game.getServer().getDefaultWorldName()))
 					{
 						permDef = "extraperm.experm.group.default.permission." + world;
 					}
 					
-					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+					if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && world.equals(game.getServer().getDefaultWorldName()))
+					{
+						perm2Def = "extraperm.experm.group.default.permission.default";
+					}
+					
+					if (world.equals(game.getServer().getDefaultWorldName()) && !name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+					{
+						perm3Def = "extraperm.experm.group." + name + ".permission.default";
+					}
+					
+					if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false) || (perm2Def != null ? src.hasPermission(perm2Def) : false) || (perm3Def != null ? src.hasPermission(perm3Def) : false))
 					{
 						boolean bool = Boolean.valueOf(args.<String>getOne("value2").get());
 						
@@ -1334,13 +1402,25 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				String perm = "extraperm.experm.group." + name + ".inheritance";
 				String permDef = null;
+				String perm2Def = null;
+				String perm3Def = null;
 				
-				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && !world.equals(game.getServer().getDefaultWorldName()))
 				{
-					permDef = "extraperm.experm.group.default.inheritance";
+					permDef = "extraperm.experm.group.default.inheritance." + world;
 				}
 				
-				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && world.equals(game.getServer().getDefaultWorldName()))
+				{
+					perm2Def = "extraperm.experm.group.default.inheritance.default";
+				}
+				
+				if (world.equals(game.getServer().getDefaultWorldName()) && !name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+				{
+					perm3Def = "extraperm.experm.group." + name + ".inheritance.default";
+				}
+				
+				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false) || (perm2Def != null ? src.hasPermission(perm2Def) : false) || (perm3Def != null ? src.hasPermission(perm3Def) : false))
 				{
 					ranks.get().getNode(name, option).setValue(value);
 					ranks.save();
@@ -1379,13 +1459,75 @@ public class CmdExtraPermExecutor implements CommandExecutor
 			{
 				String perm = "extraperm.experm.group." + name + ".remove." + value + "." + world;
 				String permDef = null;
+				String perm2Def = null;
+				String perm3Def = null;
 				
-				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && !world.equals(game.getServer().getDefaultWorldName()))
 				{
 					permDef = "extraperm.experm.group.default.remove." + value + "." + world;
 				}
 				
-				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false))
+				if (name.equalsIgnoreCase(Manager.getDefaultGroupName()) && world.equals(game.getServer().getDefaultWorldName()))
+				{
+					perm2Def = "extraperm.experm.group.default.remove." + value + ".default";
+				}
+				
+				if (world.equals(game.getServer().getDefaultWorldName()) && !name.equalsIgnoreCase(Manager.getDefaultGroupName()))
+				{
+					perm3Def = "extraperm.experm.group." + name + ".remove." + value + ".default";
+				}
+				
+				if (src.hasPermission(perm) || (permDef != null ? src.hasPermission(permDef) : false) || (perm2Def != null ? src.hasPermission(perm2Def) : false) || (perm3Def != null ? src.hasPermission(perm3Def) : false))
+				{
+					if (args.hasAny("value2") && value.equals("permission"))
+					{
+						ranks.get().getNode(name, world, "permissions").removeChild(args.<String>getOne("value2").get());
+						ranks.save();
+						ranks.loadByRank(name);
+						
+						Manager.getGroup(name).reload();
+						Manager.reloadPlayersByRank(name);
+						
+						String out = lang.removeValWorldGroup.replace("%group%", name).replace("%value%", args.<String>getOne("value2").get()).replace("%world", world);
+						
+						sendMessage(src, out);
+					}
+					else
+					{
+						ranks.get().getNode(name, world).removeChild(value);
+						ranks.save();
+						ranks.loadByRank(name);
+						
+						Manager.getGroup(name).reload();
+						Manager.reloadPlayersByRank(name);
+						
+						String out = lang.removeValWorldGroup.replace("%group%", name).replace("%value%", value).replace("%world", world);
+						
+						sendMessage(src, out);
+					}
+				}
+				else
+				{
+					String out = lang.dontHave.replace("%perm%", perm);
+					sendMessage(src, out);
+				}
+			}
+			else
+			{
+				if (args.hasAny("value2") && value.equals("permission"))
+				{
+					ranks.get().getNode(name, world).removeChild(args.<String>getOne("value2").get());
+					ranks.save();
+					ranks.loadByRank(name);
+					
+					Manager.getGroup(name).reload();
+					Manager.reloadPlayersByRank(name);
+					
+					String out = lang.removeValWorldGroup.replace("%group%", name).replace("%value%", args.<String>getOne("value2").get()).replace("%world", world);
+					
+					sendMessage(src, out);
+				}
+				else
 				{
 					ranks.get().getNode(name, world).removeChild(value);
 					ranks.save();
@@ -1398,24 +1540,6 @@ public class CmdExtraPermExecutor implements CommandExecutor
 					
 					sendMessage(src, out);
 				}
-				else
-				{
-					String out = lang.dontHave.replace("%perm%", perm);
-					sendMessage(src, out);
-				}
-			}
-			else
-			{
-				ranks.get().getNode(name, world).removeChild(value);
-				ranks.save();
-				ranks.loadByRank(name);
-				
-				Manager.getGroup(name).reload();
-				Manager.reloadPlayersByRank(name);
-				
-				String out = lang.removeValWorldGroup.replace("%group%", name).replace("%value%", value).replace("%world", world);
-				
-				sendMessage(src, out);
 			}
 		}
 		else
@@ -1426,6 +1550,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		return CommandResult.success();
 	}
+	
 
 	private CommandResult cmdInfo(CommandSource src, CommandContext args)
 	{
@@ -1673,6 +1798,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		return CommandResult.success();
 	}
 	
+	
 	private CommandResult cmdInfo(CommandSource src, CommandContext args, String world)
 	{
 		if (!args.hasAny("option2"))
@@ -1855,6 +1981,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		return CommandResult.success();
 	}
+	
 
 	private CommandResult cmdUUID(CommandSource src, CommandContext args)
 	{
@@ -1876,6 +2003,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		return CommandResult.success();
 	}
+	
 
 	private CommandResult cmdReload(CommandSource src, CommandContext args)
 	{
@@ -1892,6 +2020,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		return CommandResult.success();
 	}
+	
 	
 	private List<Text> calculateRank(String rank)
 	{
@@ -1923,6 +2052,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		return temp;
 	}
 	
+	
 	private List<Text> calculateRank(String rank, String worldName)
 	{
 		List<Text> temp = new ArrayList<Text>();
@@ -1952,6 +2082,7 @@ public class CmdExtraPermExecutor implements CommandExecutor
 		
 		return temp;
 	}
+	
 
 	private void setRank(CommandContext args, EPPlayer p, CommandSource src, String name, String value)
 	{

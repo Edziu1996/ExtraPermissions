@@ -154,6 +154,6 @@ public class ExtraPermissions
 	{
 		public static final String ID = "extraperm";
 		public static final String NAME = "ExtraPermissions";
-		public static final String VERSION = "0.7.1";
+		public static final String VERSION = "0.7.2";
 	}
 }

@@ -41,7 +41,7 @@ public class Manager
 	
 	public static void initPlayers()
 	{
-
+		
 		for (String player : playersConf.playersMap.keySet())
 		{
 			new EPPlayer(UUID.fromString(player));

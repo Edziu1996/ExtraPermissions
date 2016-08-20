@@ -87,67 +87,75 @@ public class EPPlayer
 	{
 		String sid = id.toString();
 		
-		Map<Object, ? extends CommentedConfigurationNode> play = players.playersMap.get(sid);
-		
-		checkLastRank();
-		
-		if (play.containsKey("lastRank"))
+		if (players.playersMap.containsKey(sid))
 		{
-			lastGroup = play.get("lastRank").getString();
-		}
-		
-		if (play.containsKey("rankTime"))
-		{
-			rankTime = play.get("rankTime").getLong();
-		}
-		
-		if (play.containsKey("rankTimed"))
-		{
-			rankTimed = play.get("rankTimed").getBoolean();
-		}
-		
-		if (play.containsKey("rank"))
-		{
-			group = play.get("rank").getString();
+			Map<Object, ? extends CommentedConfigurationNode> play = players.playersMap.get(sid);
+			
+			checkLastRank();
+			
+			if (play.containsKey("lastRank"))
+			{
+				lastGroup = play.get("lastRank").getString();
+			}
+			
+			if (play.containsKey("rankTime"))
+			{
+				rankTime = play.get("rankTime").getLong();
+			}
+			
+			if (play.containsKey("rankTimed"))
+			{
+				rankTimed = play.get("rankTimed").getBoolean();
+			}
+			
+			if (play.containsKey("rank"))
+			{
+				group = play.get("rank").getString();
+			}
+			else
+			{
+				group = Manager.getDefaultGroup().getName();
+			}
+			
+			if (play.containsKey("suffix"))
+			{
+				suffix.put("default", play.get("suffix").getString());
+			}
+			
+			if (play.containsKey("prefix"))
+			{
+				prefix.put("default", play.get("prefix").getString());
+			}
+			
+			if (play.containsKey("worlds"))
+			{
+				if (play.get("worlds").hasMapChildren())
+				{
+					for (Entry<Object, ? extends CommentedConfigurationNode> s : play.get("worlds").getChildrenMap().entrySet())
+					{
+						String world = s.getKey().toString();
+						
+						if (s.getValue().hasMapChildren())
+						{
+							if (s.getValue().getChildrenMap().containsKey("suffix"))
+							{
+								suffix.put(world, s.getValue().getChildrenMap().get("suffix").getString());
+							}
+							
+							if (s.getValue().getChildrenMap().containsKey("prefix"))
+							{
+								suffix.put(world, s.getValue().getChildrenMap().get("prefix").getString());
+							}
+						}
+					}
+				}
+			}
 		}
 		else
 		{
 			group = Manager.getDefaultGroup().getName();
 		}
 		
-		if (play.containsKey("suffix"))
-		{
-			suffix.put("default", play.get("suffix").getString());
-		}
-		
-		if (play.containsKey("prefix"))
-		{
-			prefix.put("default", play.get("prefix").getString());
-		}
-		
-		if (play.containsKey("worlds"))
-		{
-			if (play.get("worlds").hasMapChildren())
-			{
-				for (Entry<Object, ? extends CommentedConfigurationNode> s : play.get("worlds").getChildrenMap().entrySet())
-				{
-					String world = s.getKey().toString();
-					
-					if (s.getValue().hasMapChildren())
-					{
-						if (s.getValue().getChildrenMap().containsKey("suffix"))
-						{
-							suffix.put(world, s.getValue().getChildrenMap().get("suffix").getString());
-						}
-						
-						if (s.getValue().getChildrenMap().containsKey("prefix"))
-						{
-							suffix.put(world, s.getValue().getChildrenMap().get("prefix").getString());
-						}
-					}
-				}
-			}
-		}
 		
 		permissions = calculatePermissions();
 	}
@@ -163,73 +171,76 @@ public class EPPlayer
 		
 		String sid = this.getUUIDString();
 		
-		Map<Object, ? extends CommentedConfigurationNode> play = players.playersMap.get(sid);
-		
-		if (play.containsKey("permissions"))
+		if (players.playersMap.containsKey(sid))
 		{
-			if (play.get("permissions").hasMapChildren())
+			Map<Object, ? extends CommentedConfigurationNode> play = players.playersMap.get(sid);
+			
+			if (play.containsKey("permissions"))
 			{
-				Map<String, Boolean> temp = new HashMap<>();
-				
-				if (map.containsKey("default"))
+				if (play.get("permissions").hasMapChildren())
 				{
-					temp = map.get("default");
-					map.remove("default");
-				}
-				
-				for (Entry<Object, ? extends CommentedConfigurationNode> s : play.get("permissions").getChildrenMap().entrySet())
-				{
-					if (temp.containsKey(s.getKey().toString()))
-					{
-						temp.replace(s.getKey().toString(), s.getValue().getBoolean());
-					}
-					else
-					{
-						temp.put(s.getKey().toString(), s.getValue().getBoolean());
-					}
-				}
-				
-				map.put("default", temp);
-			}
-		}
-		
-		if (play.containsKey("worlds"))
-		{
-			if (play.get("worlds").hasMapChildren())
-			{
-				for (Entry<Object, ? extends CommentedConfigurationNode> s : play.get("worlds").getChildrenMap().entrySet())
-				{
-					String world = s.getKey().toString();
+					Map<String, Boolean> temp = new HashMap<>();
 					
-					if (s.getValue().hasMapChildren())
+					if (map.containsKey("default"))
 					{
-						if (s.getValue().getChildrenMap().containsKey("permissions"))
+						temp = map.get("default");
+						map.remove("default");
+					}
+					
+					for (Entry<Object, ? extends CommentedConfigurationNode> s : play.get("permissions").getChildrenMap().entrySet())
+					{
+						if (temp.containsKey(s.getKey().toString()))
 						{
-							CommentedConfigurationNode perm = s.getValue().getChildrenMap().get("permissions");
-							
-							if (perm.hasMapChildren())
+							temp.replace(s.getKey().toString(), s.getValue().getBoolean());
+						}
+						else
+						{
+							temp.put(s.getKey().toString(), s.getValue().getBoolean());
+						}
+					}
+					
+					map.put("default", temp);
+				}
+			}
+			
+			if (play.containsKey("worlds"))
+			{
+				if (play.get("worlds").hasMapChildren())
+				{
+					for (Entry<Object, ? extends CommentedConfigurationNode> s : play.get("worlds").getChildrenMap().entrySet())
+					{
+						String world = s.getKey().toString();
+						
+						if (s.getValue().hasMapChildren())
+						{
+							if (s.getValue().getChildrenMap().containsKey("permissions"))
 							{
-								Map<String, Boolean> temp = new HashMap<>();
+								CommentedConfigurationNode perm = s.getValue().getChildrenMap().get("permissions");
 								
-								if (map.containsKey(world))
+								if (perm.hasMapChildren())
 								{
-									temp = map.get(world);
-									map.remove(world);
-								}
-								
-								for (Entry<Object, ? extends CommentedConfigurationNode> p : perm.getChildrenMap().entrySet())
-								{
-									if (temp.containsKey(p.getKey().toString()))
+									Map<String, Boolean> temp = new HashMap<>();
+									
+									if (map.containsKey(world))
 									{
-										temp.replace(p.getKey().toString(), p.getValue().getBoolean());
+										temp = map.get(world);
+										map.remove(world);
 									}
-									else
+									
+									for (Entry<Object, ? extends CommentedConfigurationNode> p : perm.getChildrenMap().entrySet())
 									{
-										temp.put(p.getKey().toString(), p.getValue().getBoolean());
+										if (temp.containsKey(p.getKey().toString()))
+										{
+											temp.replace(p.getKey().toString(), p.getValue().getBoolean());
+										}
+										else
+										{
+											temp.put(p.getKey().toString(), p.getValue().getBoolean());
+										}
 									}
+									
+									map.put(world, temp);
 								}
-								
-								map.put(world, temp);
 							}
 						}
 					}
