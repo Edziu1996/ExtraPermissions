@@ -26,7 +26,7 @@ public class ConfigRanks extends ConfigManager
 	{
 		get().getNode("user", "prefix").setValue("[User]");
 		get().getNode("user", "permissions", "extraperm.build").setValue(false);
-		get().getNode("user", "worlds", game.getServer().getDefaultWorldName(), "permissions", "extraperm.build").setValue(true);
+		get().getNode("user", "worlds", "world", "permissions", "extraperm.build").setValue(true);
 		get().getNode("user", "worlds", "DIM-1", "prefix").setValue("[User in Nether]");
 		get().getNode("user", "worlds", "DIM1", "prefix").setValue("[User in The End]");
 		
